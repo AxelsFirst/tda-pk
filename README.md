@@ -20,9 +20,8 @@ Proszę o aktualizację tej części pliku, jeśli:
 - zauważono nowy problem, który warto dopisać do poniższej listy.
 
 ### Pozostało do zrobienia
-- lista sąsiedztwa punktów na płaszczyźnie euklidesowej R^n,
-- funkcja licząca odległość euklidesową pomiędzy dwoma punktami z płaszczyzny (pierwiastek z normy różnicy punktów),
-- algorytm wykrywający sympleksy (wielokąty) w zależności od parametru "d", jeśli wszystkie boki i przekątne wielokątu są mniejsze od "2d" (bądź "d" w zależności od założenia).
+- algorytm wykrywający sympleksy (tak jakby wielokąty) w zależności od parametru "d", jeśli wszystkie boki i przekątne wielokątu są mniejsze od "2d" (bądź "d" w zależności od założenia, czy d będze promieniem odległości, czy średnicą odległości od punktu).
 
 ### Ukończono
-- brak.
+- klasa punktów, a z nią norma i metryka punktów należących do przestrzeni R^n,
+- początek klasy grafów, z listą punktów.
