@@ -1,7 +1,28 @@
 # Vietoris-Rips_complex
 Program wypisujący sympleksy Vietorigo-Ripsa.
 
-## Do zrobienia:
-- lista (bądź macierz) sąsiedztwa punktów na płaszczyźnie 2D,
-- funkcja licząca odległość pomiędzy dwoma punktami,
-- algorytm wykrywający trójkąty oraz inne wielokąty w zależności od parametru "d", gdzie boki w wielokącie muszą być przynajmniej długości 2d.
+## O programie
+
+### Sposób działania
+Ponieważ program operuje na przestrzeniach euklidesowych R^n z metryką euklidesową, należy zacząć od podania wymiaru danych, po czym zaleca się wypisać punkty o współczynnikach będącymi liczbami rzeczywistymi. Po wypisaniu wszystkich informacji program zwróci wszystkie istniejące sympleksy złożone z punktów danych.
+
+### Informacja o sposobie odczytywania wyniku
+Jeśli {a_1, a_2, a_3, ..., a_n} będzie sympleksem n-tego stopnia, to istnieje n sympleksów stopnia n-1 złożonych z punktów danych należących do {a_1, a_2, a_3, ..., a_n}. 
+
+Korzystając z powyższej zależności, to jeśli istnieje sympleks S n-tego stopnia program nie będzie zwracał sympleksów o stopniu mniejszym niż n, jeśli będą się one składać tylko i wyłącznie z wierzchołków zawierających się w S. Ten sposób wypisania wyniku obliczeń programu jest umotywowany próbą zachowania czytelności.
+
+### Informacja o złożoności obliczeniowej
+Ze względu na złożoność obliczeniową w celu testowania programu zaleca się użycia dostatecznie małej ilości punktów.
+
+## Dla twórców
+Proszę o aktualizację tej części pliku, jeśli
+- ukończono fragment projektu zamieszczony na liście do zrobienia,
+- zauważono nowy problem, który warto dopisać do poniższej listy.
+
+### Pozostało do zrobienia
+- lista sąsiedztwa punktów na płaszczyźnie euklidesowej R^n,
+- funkcja licząca odległość euklidesową pomiędzy dwoma punktami z płaszczyzny (pierwiastek z normy różnicy punktów),
+- algorytm wykrywający sympleksy (wielokąty) w zależności od parametru "d", jeśli wszystkie boki i przekątne wielokątu są mniejsze od "2d" (bądź "d" w zależności od założenia).
+
+### Ukończono
+- brak.
