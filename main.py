@@ -15,88 +15,108 @@ class punkt:
     # # Metoda tworzy listę współrzędnych punktu,
     # # może zostać użyta by od nowa wpisać współrzędne
     # def ustaw_wsp(self):
-    #     self.lista_wsp = []
+    #     self.lista_wspolrzednych = []
     #     for i in range(self.wymiar):
     #         self.wsp.append(input('Wypisz {}-tą współrzędną: '.format(i)))
 
     # Metoda przypisuje pozostałe atrybuty punktu
-    def __init__(self, nazwa, wymiar):
+    def __init__(self, nazwa, wymiar, lista_wspolrzednych):
         self.nazwa = nazwa
         self.wymiar = wymiar
-        self.lista_wsp
+        self.lista_wspolrzednych = lista_wspolrzednych
     
     # # Metoda najprawdopodobniej niepotrzebna,
     # # zwraca bądź drukuje współrzędne punktu
     # def wypisz_wsp(self, wydrukuj = False):
     #     if wydrukuj == True:
-    #         print(self.lista_wsp)
+    #         print(self.lista_wspolrzednych)
     #     else:
-    #         return self.lista_wsp
+    #         return self.lista_wspolrzednych
 
     # Metoda zmienia jedną współrzędną punktu o określonym indeksie
     def zmien_wsp(self, indeks, wartosc):
-        self.lista_wsp[indeks] = wartosc
+        self.lista_wspolrzednych[indeks] = wartosc
+
+    # Metoda zmienia wszystkie współrzędne punktu
+    def ustaw_wsp(self, lista_wspolrzednych, nowa_lista_wspolrzednych):
+        self.lista_wspolrzednych = nowa_lista_wspolrzednych
 
     # Metoda sprzężona dodawania punktów po współrzędnych (a + b)
     def __add__(self, other):
+        if self.wymiar!=other.wymiar:
+            raise IndexError
         suma = []
         for i in range(self.wymiar):
-            suma.append(self.lista_wsp[i] + other.lista_wsp[i])
+            suma.append(self.lista_wspolrzednych[i] + other.lista_wspolrzednych[i])
         return suma
 
     # Metoda sprzężona dodawania punktów po współrzędnych (a += b)
     def __iadd__(self, other):
+        if self.wymiar!=other.wymiar:
+            raise IndexError
         suma = []
         for i in range(self.wymiar):
-            suma.append(self.lista_wsp[i] + other.lista_wsp[i])
+            suma.append(self.lista_wspolrzednych[i] + other.lista_wspolrzednych[i])
         return suma
 
     # Metoda sprzężona odejmowania punktów po współrzędnych (a - b)
     def __sub__(self, other):
+        if self.wymiar!=other.wymiar:
+            raise IndexError
         roznica = []
         for i in range(self.wymiar):
-            roznica.append(self.lista_wsp[i] - other.lista_wsp[i])
+            roznica.append(self.lista_wspolrzednych[i] - other.lista_wspolrzednych[i])
         return roznica
 
     # Metoda sprzężona odejmowania punktów po współrzędnych (a -= b)
     def __isub__(self, other):
+        if self.wymiar!=other.wymiar:
+            raise IndexError
         roznica = []
         for i in range(self.wymiar):
-            roznica.append(self.lista_wsp[i] - other.lista_wsp[i])
+            roznica.append(self.lista_wspolrzednych[i] - other.lista_wspolrzednych[i])
         return roznica
 
     # Metoda sprzężona mnożenia punktów po współrzędnych (a * b)
     def __mul__(self, other):
+        if self.wymiar!=other.wymiar:
+            raise IndexError
         iloczyn = []
         for i in range(self.wymiar):
-            iloczyn.append(self.lista_wsp[i] * other.lista_wsp[i])
+            iloczyn.append(self.lista_wspolrzednych[i] * other.lista_wspolrzednych[i])
         return iloczyn
     
     # Metoda sprzężona mnożenia punktów po współrzędnych (a *= b)
     def __imul__(self, other):
+        if self.wymiar!=other.wymiar:
+            raise IndexError
         iloczyn = []
         for i in range(self.wymiar):
-            iloczyn.append(self.lista_wsp[i] * other.lista_wsp[i])
+            iloczyn.append(self.lista_wspolrzednych[i] * other.lista_wspolrzednych[i])
         return iloczyn
 
     # Metoda sprzężona dzielenia punktów po współrzędnych (a * b)
     def __div__(self, other):
+        if self.wymiar!=other.wymiar:
+            raise IndexError
         iloraz = []
         for i in range(self.wymiar):
-            iloraz.append(self.lista_wsp[i] / other.lista_wsp[i])
+            iloraz.append(self.lista_wspolrzednych[i] / other.lista_wspolrzednych[i])
         return iloraz
 
     # Metoda sprzężona dzielenia punktów po współrzędnych (a *= b)
     def __idiv__(self, other):
+        if self.wymiar!=other.wymiar:
+            raise IndexError
         iloraz = []
         for i in range(self.wymiar):
-            iloraz.append(self.lista_wsp[i] / other.lista_wsp[i])
+            iloraz.append(self.lista_wspolrzednych[i] / other.lista_wspolrzednych[i])
         return iloraz
 
     # Metoda zwraca normę euklidesową punktu
     def norma(self):
         suma = 0
-        for wsp in self.lista_wsp:
+        for wsp in self.lista_wspolrzednych:
             suma += wsp**2
         return math.sqrt(suma)
 
@@ -139,7 +159,10 @@ class kompleks_vietorigo_ripsa:
         self.metryka = metryka
 
         # Utworzenie grafu
-        self.graf = utworz_graf()
+        self.graf = self.utworz_graf()
+
+        # Szukanie sympleksów
+        self.znajdz_sympleksy(map(tuple, list(networkx.find_cliques(self.graf))))
 
     # Funkcja tworzy graf nieskierowany
     def utworz_graf(self):
@@ -152,18 +175,35 @@ class kompleks_vietorigo_ripsa:
         graf.add_nodes_from(self.oznaczenia)
 
         # Przyporządkowanie wierzchołkom właściwe punkty
-        lista_punktów_z_oznaczeniami = zip(self.punkty, self.oznaczenia)
+        lista_punktów_z_oznaczeniami = tuple(zip(self.punkty, self.oznaczenia))
 
         # Za każdą parę dwóch wierzchołków
         #   jeśli oznaczenia wierzchołków są różne
         #       oblicz odległość pomiędzy punktami,
         #       jeśli odległość jest mniejsza niż przyjęte epsilon
         #           utwórz bok prowadzący z jednego wierzchołka do drugiego
+        # product() można zastąpić podwójną pętlą
         for para in product(lista_punktów_z_oznaczeniami, lista_punktów_z_oznaczeniami):
             if para[0][1]!=para[1][1]:
                 odleglosc = self.metryka(para[0][0], para[1][0])
                 if odleglosc < self.epsilon:
-                    graf.add_edge(pair[0][1], pair[1][1])
+                    graf.add_edge(para[0][1], para[1][1])
         
         return graf
+
+    def znajdz_sympleksy(self, lista_sympleksow):
+        self.lista_sympleksow = map(lambda sympleks: tuple(sorted(sympleks)), lista_sympleksow)
+        self.lista_scian = self.wypisz_sciany()
+
+    def wypisz_sciany(self):
+        zbior_scian = set()
+        for sympleks in self.lista_sympleksow:
+            liczba_wierzcholkow = len(sympleks)
+            for wymiar_sciany in range(liczba_wierzcholkow, 0, -1):
+                for sciana in combinations(sympleks, wymiar_sciany):
+                    zbior_scian.add(sciana)
+        return zbior_scian
+
+    def wypisz_sciany_danego_wymiaru(self, wymiar):
+        return filter(lambda sciana: len(sciana)==wymiar + 1, self.zbior_scian)
 
