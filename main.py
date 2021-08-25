@@ -9,7 +9,7 @@ from scipy.spatial import distance
 from itertools import product
 
 # Klasa punktów leżących na przestrzeni euklidesowej R^n
-class punkt:
+class Punkt:
 
     # Skomentowane by to zaimplementować poza klasą
     # # Metoda tworzy listę współrzędnych punktu,
@@ -144,12 +144,13 @@ class punkt:
 #         self.ustaw_liste_punkt()
 
 # Klasa kompleksu Vietorigo-Ripsa
-class kompleks_vietorigo_ripsa:
+class Kompleks_Vietorigo_Ripsa:
 
-    # Obiekt przyjmuje listę punktów, 
+    # Obiekt przyjmuje:
+    # listę punktów, 
     # epsilon będący maksymalną możliwą odległością do zarejestrowania krawędzi,
     # własne oznaczenia wierzchołków,
-    # (tymczasowe, bo zaimplementowane w klasie punktów) własną metrykę
+    # własną metrykę (tymczasowe, bo zaimplementowane także w klasie punktów)
     def __init__(self, punkty, epsilon, oznaczenia=None, metryka=distance.euclidean):
         self.punkty = punkty
         self.epsilon = epsilon
@@ -161,10 +162,14 @@ class kompleks_vietorigo_ripsa:
         # Utworzenie grafu
         self.graf = self.utworz_graf()
 
-        # Szukanie sympleksów
-        self.znajdz_sympleksy(map(tuple, list(networkx.find_cliques(self.graf))))
+        # # Szukanie sympleksów
+        # self.znajdz_sympleksy(map(tuple, list(networkx.find_cliques(self.graf))))
 
-    # Funkcja tworzy graf nieskierowany
+        # Szukanie sympleksów (bez zewnętrznej metody)
+        lista_sympleksow = map(tuple, list(networkx.find_cliques(self.graf)))
+        self.lista_sympleksow = map(lambda sympleks: tuple(sorted(sympleks)), lista_sympleksow)
+
+    # Metoda tworzy graf nieskierowany
     def utworz_graf(self):
 
         # Utworzenie obiektu grafu nieskierowanego
@@ -185,16 +190,21 @@ class kompleks_vietorigo_ripsa:
         # product() można zastąpić podwójną pętlą
         for para in product(lista_punktów_z_oznaczeniami, lista_punktów_z_oznaczeniami):
             if para[0][1]!=para[1][1]:
-                odleglosc = self.metryka(para[0][0], para[1][0])
+                # # Wersja dla metryki z distance.euclidean
+                # odleglosc = self.metryka(para[0][0], para[1][0])
+
+                # Wersja dla metryki z klasy punktów
+                odleglosc = para[0][0].metryka(para[1][0])
                 if odleglosc < self.epsilon:
                     graf.add_edge(para[0][1], para[1][1])
         
         return graf
 
-    def znajdz_sympleksy(self, lista_sympleksow):
-        self.lista_sympleksow = map(lambda sympleks: tuple(sorted(sympleks)), lista_sympleksow)
-        self.lista_scian = self.wypisz_sciany()
+    # def znajdz_sympleksy(self, lista_sympleksow):
+    #     self.lista_sympleksow = map(lambda sympleks: tuple(sorted(sympleks)), lista_sympleksow)
+    #     self.lista_scian = self.wypisz_sciany()
 
+    # Metoda zwraca wszystkie sympleksy kompleksu
     def wypisz_sciany(self):
         zbior_scian = set()
         for sympleks in self.lista_sympleksow:
@@ -204,6 +214,7 @@ class kompleks_vietorigo_ripsa:
                     zbior_scian.add(sciana)
         return zbior_scian
 
+    # Metoda zwraca wszystkie sympleksy kompleksu o określonym wymiarze
+    # (na razie nie wiem dlaczego ma być tu 'wymiar + 1')
     def wypisz_sciany_danego_wymiaru(self, wymiar):
         return filter(lambda sciana: len(sciana)==wymiar + 1, self.zbior_scian)
-
