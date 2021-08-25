@@ -200,6 +200,7 @@ class Kompleks_Vietorigo_Ripsa:
         
         return graf
 
+    # # Początkowa metoda do szukania sympleksów
     # def znajdz_sympleksy(self, lista_sympleksow):
     #     self.lista_sympleksow = map(lambda sympleks: tuple(sorted(sympleks)), lista_sympleksow)
     #     self.lista_scian = self.wypisz_sciany()
@@ -218,3 +219,96 @@ class Kompleks_Vietorigo_Ripsa:
     # (na razie nie wiem dlaczego ma być tu 'wymiar + 1')
     def wypisz_sciany_danego_wymiaru(self, wymiar):
         return filter(lambda sciana: len(sciana)==wymiar + 1, self.zbior_scian)
+
+# Tutaj zaczyna się właściwy program
+if __name__ == "__main__":
+
+    # Krótka informacja o programie
+    print('Program służy do obliczania kompleksu Vietorigo-Ripsa w przestrzeni euklidesowej.')
+    print('Autorami są Gibała Alex oraz Musielak Piotr.')
+    
+    # Tutaj użytkownik wpisuje liczbę punktów
+    # Pętla została umieszczona w celu upewnienia się, że podano liczbę oraz czy jest ona poprawna
+    # Ilość punktów musi być niezerową liczbą naturalną
+    while True:
+        try:
+            print('Ile jest punktów danych?')
+            liczba_punktow = int(input('Wpisz tutaj: '))
+            if liczba_punktow <= 0:
+                print('Liczba punktów danych musi być dodatnia!')
+            else:
+                break
+        except:
+            print('Niepoprawna odpowiedź!')
+            print('Podaj niezerową liczbę naturalną!')
+        
+    # Tutaj użytkownik oznajmia czy zamierza stosować własne oznaczenia punktów
+    # W przypadku braku chęci progra samemu będzie numerować punkty
+    while True:
+        print('Czy zamierzasz stosować własne oznaczenia nazw?')
+        wlasne_oznaczenia = input('Wpisz tutaj [TAK/nie]: ')
+        if wlasne_oznaczenia.lower() == 'tak' or wlasne_oznaczenia.lower() == 't' or wlasne_oznaczenia == '':
+            wlasne_oznaczenia = True
+            break
+        elif wlasne_oznaczenia.lower() == 'nie' or wlasne_oznaczenia.lower() == 'n':
+            wlasne_oznaczenia = False
+            break
+        else:
+            print('Niepoprawna odpowiedź!')
+            print('Napisz "Tak" lub "Nie".')
+
+    # Tutaj użytkownik oznajmia wymiar przestrzeni euklidesowej R^n, do której należą punkty
+    # Wymiar przestrzeni musi być niezerową liczbą naturalną
+    while True:
+        try:
+            print('Jaki jest wymiar rozważanej przestrzeni euklidesowej R^n?')
+            wymiar = int(input('Wpisz tutaj: '))
+            if wymiar <= 0:
+                print('Liczba punktów danych musi być dodatnia!')
+            else:
+                break
+        except:
+            print('Niepoprawna odpowiedź!')
+            print('Podaj niezerową liczbę naturalną!')
+
+    # Tutaj użytkownik wypisuje wszystkie punkty
+    # W przypadku, gdy użytkownik pomyli się, to program poprosi o ponownie wpisanie
+    # danych, bez potrzeby restartowania aplikacji.
+    if wlasne_oznaczenia == True:
+        print('Teraz wypisz nazwy punktów wraz z współrzędnymi.')
+    else:
+        print('Teraz wypisz współrzędne wszystkich wierzchołków.')
+
+    lista_punktow = list()
+
+    for indeks_punktu in range(liczba_punktow):
+
+        # Tutaj użytkownik wpisuje własne oznaczenie punktu
+        if wlasne_oznaczenia == True:
+            while True:
+                nazwa_punktu = str(input('Wpisz nazwę punktu: '))
+                if isinstance(nazwa_punktu, Punkt):
+                    print('Niepoprawna odpowiedź!')
+                    print('Oznaczenia nie mogą się powtarzać!')
+                else:
+                        break
+
+        # Numerowanie od 1 z przyjętego standardu, że współrzędne wymienia się jako (x_1, x_2, ..., x_n)
+        lista_wspolrzednych = list()
+        for indeks_wspolrzednej in range(1, wymiar+1):
+            while True:
+                try:
+                    lista_wspolrzednych.append(float(input('Wpisz współrzędną x{}: '.format(indeks_wspolrzednej))))
+                    break
+                except:
+                    print('Niepoprawna odpowiedź!')
+                    print('Podaj liczbę rzeczywistą!')
+            
+        # Tutaj tworzymy punkt
+        if wlasne_oznaczenia == False:
+            Punkt(indeks_punktu, wymiar, lista_wspolrzednych)
+        else:
+            Punkt(nazwa_punktu, wymiar, lista_wspolrzednych)
+        lista_punktow.append(lista_wspolrzednych)
+    
+    print('Graf się tworzy...')
