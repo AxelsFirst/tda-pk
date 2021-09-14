@@ -13,15 +13,3 @@ Korzystając z powyższej zależności, to jeśli istnieje sympleks S n-tego sto
 
 ### Informacja o złożoności obliczeniowej
 Ze względu na złożoność obliczeniową w celu testowania programu zaleca się użycia dostatecznie małej ilości punktów.
-
-## Dla współtwórców
-Proszę o aktualizację tej części pliku, jeśli:
-- ukończono fragment projektu zamieszczony na liście do zrobienia,
-- zauważono nowy problem, który warto dopisać do poniższej listy.
-
-### Pozostało do zrobienia
-- algorytm wykrywający sympleksy (tak jakby wielokąty) w zależności od parametru "d", jeśli wszystkie boki i przekątne wielokątu są mniejsze od "2d" (bądź "d" w zależności od założenia, czy d będze promieniem odległości, czy średnicą odległości od punktu).
-
-### Ukończono
-- klasa punktów, a z nią norma i metryka punktów należących do przestrzeni R^n,
-- początek klasy grafów, z listą punktów.
