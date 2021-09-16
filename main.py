@@ -1,8 +1,8 @@
- # Autorami programu są Alex Gibała :)
- # Jesteśmy studentami matematyki stosowanej na Politechnice Krakowskiej
+# Autorami programu są Alex Gibała i Piotr Musielak
+# Jesteśmy studentami matematyki stosowanej na Politechnice Krakowskiej
 
- # Program służy do szukania sympleksów w kompleksie Vietorigo-Ripsa
- # Program zostanie w przyszłości rozbudowany o kolejne funkcje
+# Program służy do szukania sympleksów w kompleksie Vietorigo-Ripsa
+# Program zostanie w przyszłości rozbudowany o kolejne funkcje
 
 # Biblioteka z kombinatoryki została wykorzystana za pomocą funkcji combinations()
 from itertools import combinations
@@ -10,11 +10,11 @@ from itertools import combinations
 # Biblioteka umożliwia dodawanie w miejscach wcześniech niemożliwych
 from operator import add
 
-# Biblioteka networkx jest wykorzystana w celu stworzenia grafu oraz rozwiązania problemu znalezienia 
+# Biblioteka networkx jest wykorzystana w celu stworzenia grafu oraz rozwiązania problemu znalezienia
 # kliki, czyli takiego podzbioru wierzchołków, że dwa dowolne i różne od siebie wierzchołki są sąsiednie
 import networkx
 
-# Z bliblioteki scipy.spatial wykorzystujemy metrykę euklidesową distance.euclidean()
+# Z bliblioteki scipy.spatial wykorzystujemy metrykę euklidesową distance.euclidean()
 from scipy.spatial import distance
 
 # Funkcja product() jest wykorzystana w celu zastąpienia zagnieżdżonych pętel
@@ -22,6 +22,8 @@ from itertools import product
 
 # Klasa punktów leżących na przestrzeni euklidesowej R^n
 # Klasa najprawdopodobniej niepotrzebna
+
+
 class Punkt:
 
     # Obiekt punktu przyjmuje:
@@ -32,10 +34,12 @@ class Punkt:
         self.lista_wspolrzednych = lista_wspolrzednych
 
 # Klasa kompleksu Vietorigo-Ripsa
+
+
 class Kompleks_Vietorigo_Ripsa:
 
     # Obiekt kompleksu przyjmuje:
-    # - listę punktów (zbiór zbiorów współrzędnych, nie oznaczeń), 
+    # - listę punktów (zbiór zbiorów współrzędnych, nie oznaczeń),
     # - epsilon będący maksymalną możliwą odległością do zarejestrowania krawędzi,
     # - (opcjonalnie) zbiór własnych oznaczeń wierzchołków,
     # - (opcjonalnie, nie zaimplementowane w praktyce) własną metrykę - standardowo metryka euklidesowa
@@ -44,7 +48,8 @@ class Kompleks_Vietorigo_Ripsa:
         self.epsilon = epsilon
 
         # Jeśli nie podano oznaczeń funkcja sama ponumeruje (zaczynając od 1 z powodu przyjętego standardu)
-        self.oznaczenia = range(1, len(self.punkty)+1) if oznaczenia==None or len(oznaczenia)!=len(self.punkty) else oznaczenia
+        self.oznaczenia = range(1, len(self.punkty)+1) if oznaczenia == None or len(
+            oznaczenia) != len(self.punkty) else oznaczenia
         self.metryka = metryka
 
         # Utworzenie grafu
@@ -76,11 +81,11 @@ class Kompleks_Vietorigo_Ripsa:
         #       jeśli odległość jest mniejsza niż przyjęte epsilon
         #           utwórz bok prowadzący z jednego wierzchołka do drugiego
         for para in product(lista_punktów_z_oznaczeniami, lista_punktów_z_oznaczeniami):
-            if para[0][1]!=para[1][1]:
+            if para[0][1] != para[1][1]:
                 odleglosc = self.metryka(para[0][0], para[1][0])
                 if odleglosc < self.epsilon:
                     graf.add_edge(para[0][1], para[1][1])
-        
+
         # Utworzony graf zostaje zwrócony
         return graf
 
@@ -95,7 +100,7 @@ class Kompleks_Vietorigo_Ripsa:
         #       jeśli odległość jest mniejsza niż przyjęte epsilon
         #           utwórz bok prowadzący z jednego wierzchołka do drugiego
         for para in product(lista_punktów_z_oznaczeniami, lista_punktów_z_oznaczeniami):
-            if para[0][1]!=para[1][1]:
+            if para[0][1] != para[1][1]:
                 odleglosc = self.metryka(para[0][0], para[1][0])
                 if odleglosc < self.epsilon:
                     self.graf.add_edge(para[0][1], para[1][1])
@@ -110,11 +115,12 @@ class Kompleks_Vietorigo_Ripsa:
         #       spróbuj usunąć krawędź
         #       jeśli krawędź nie istnieje zignoruj błąd (wymagane by ta metoda działała)
         for para in product(lista_punktów_z_oznaczeniami, lista_punktów_z_oznaczeniami):
-            if para[0][1]!=para[1][1]:
+            if para[0][1] != para[1][1]:
                 try:
-                    self.graf.remove_edge(para[0][1],para[1][1]) 
-                except networkx.exception.NetworkXError: # Funkcja remove_edge() zwróci ten błąd jak nie istnieje krawędź łącząca daną parę wierzchołków
-                    pass    
+                    self.graf.remove_edge(para[0][1], para[1][1])
+                # Funkcja remove_edge() zwróci ten błąd jak nie istnieje krawędź łącząca daną parę wierzchołków
+                except networkx.exception.NetworkXError:
+                    pass
 
     # Metoda do szukania sympleksów
     # Funkcja map() wykonuje funkcję na każdym elemencie listy
@@ -128,7 +134,8 @@ class Kompleks_Vietorigo_Ripsa:
         lista_sympleksow = tuple(networkx.find_cliques(self.graf))
 
         # Tutaj zamieniamy każdy sympleks ze zbioru na krotkę
-        lista_sympleksow = map(lambda sympleks: tuple(sorted(sympleks)), lista_sympleksow)
+        lista_sympleksow = map(lambda sympleks: tuple(
+            sorted(sympleks)), lista_sympleksow)
 
         # Zwracamy zbiór sympleksów
         return tuple(lista_sympleksow)
@@ -151,19 +158,18 @@ class Kompleks_Vietorigo_Ripsa:
         # Zwracamy zbiór wszystkich możliwych ścian
         return tuple(zbior_scian)
 
-    # Metoda wykorzystuje powyższą metodę w celu zwrócenia ścian o danym wymiarze
+    # Metoda wykorzystuje powyższą metodę w celu zwrócenia ścian o danym wymiarze
     def wypisz_sciany_danego_wymiaru(self, szukany_wymiar):
         zbior_scian = self.wypisz_sciany()
 
         # Tutaj filtrujemy zbiór ścian z poprzedniej funkcji szukając ścian o porządanym wymiarze
-        return tuple(filter(lambda sciana: len(sciana)==szukany_wymiar + 1, zbior_scian))
+        return tuple(filter(lambda sciana: len(sciana) == szukany_wymiar + 1, zbior_scian))
 
     # Metoda zwraca wymiar kompleksu (czyli wymiar maksymalnego sympleksu)
     def podaj_wymiar_kompleksu(self):
         maksymalny_wymiar = 0
         for sympleks in self.lista_sympleksow:
-            if  maksymalny_wymiar < len(sympleks)-1:
-                maksymalny_wymiar = len(sympleks)-1
+            maksymalny_wymiar = max(maksymalny_wymiar, len(sympleks)-1)
         return maksymalny_wymiar
 
     # Metoda zmienia wartość epsilona i jednocześnie aktualizuje krawędzie w grafie
@@ -174,6 +180,8 @@ class Kompleks_Vietorigo_Ripsa:
         self.lista_sympleksow = self.znajdz_sympleksy()
 
 # Funkcja wypisuje komendy przydatne po utworzeniu obiektu kompleksu
+
+
 def wypisz_komendy():
     print('W celu:')
     print('-otrzymania instrukcji odczytania wyników, napisz "instrukcja",')
@@ -185,24 +193,25 @@ def wypisz_komendy():
     print('-wyłączenia programu, napisz "koniec",')
     print('-ponownego wypisania komend, napisz "komendy".')
 
+
 # Tutaj zaczyna się właściwy program
 if __name__ == "__main__":
 
     # Krótka informacja o programie
     print('Program służy do obliczania kompleksu Vietorigo-Ripsa w przestrzeni euklidesowej R^n.')
-    print('Autorami projektu są Alex Gibała oraz Piotr Musielak.')
+    print('Autorami projektu jest Alex Gibała')
     print('Postępuj zgodnie ze wskazówkami!')
     print('Zacznijmy od utworzenia grafu.')
-    
+
     # Tutaj użytkownik oznajmia czy zamierza stosować własne oznaczenia punktów
     # Pętla została umieszczona w celu upewnienia się, że podano poprawną odpowiedź
     # W przypadku braku chęci progra samemu będzie numerować punkty
     while True:
         print('Czy zamierzasz stosować własne oznaczenia punktów?')
         wlasne_oznaczenia = input('Wpisz tutaj [tak/NIE]: ')
-        if wlasne_oznaczenia.lower() == 'tak' or wlasne_oznaczenia.lower() == 't':
+        if wlasne_oznaczenia.lower() in ['tak', 't']:
             wlasne_oznaczenia = True
-            lista_oznaczen = list()
+            lista_oznaczen = []
             break
         elif wlasne_oznaczenia.lower() == 'nie' or wlasne_oznaczenia.lower() == 'n' or wlasne_oznaczenia == '':
             wlasne_oznaczenia = False
@@ -210,7 +219,7 @@ if __name__ == "__main__":
         else:
             print('Niepoprawna odpowiedź!')
             print('Napisz "Tak" lub "Nie".')
-        
+
     # Tutaj użytkownik wpisuje liczbę punktów
     # Pętla została umieszczona w celu upewnienia się, że podano liczbę oraz czy jest ona poprawna
     # Ilość punktów musi być niezerową liczbą naturalną
@@ -222,7 +231,7 @@ if __name__ == "__main__":
                 print('Liczba punktów danych musi być dodatnia!')
             else:
                 break
-        except:
+        except Exception:
             print('Niepoprawna odpowiedź!')
             print('Podaj niezerową liczbę naturalną!')
 
@@ -237,7 +246,7 @@ if __name__ == "__main__":
                 print('Liczba punktów danych musi być dodatnia!')
             else:
                 break
-        except:
+        except Exception:
             print('Niepoprawna odpowiedź!')
             print('Podaj niezerową liczbę naturalną!')
 
@@ -249,10 +258,10 @@ if __name__ == "__main__":
     else:
         print('Teraz wypisz współrzędne wszystkich punktów.')
 
-    lista_punktow = list()
+    lista_punktow = []
 
     # Zaczynamy odliczanie punktów od 1 z przyjętego standardu
-    for indeks_punktu in range(1,liczba_punktow+1):
+    for indeks_punktu in range(1, liczba_punktow+1):
         print('Wypisz dane o punkcie numer {}.'.format(indeks_punktu))
 
         # Tutaj użytkownik wpisuje własne oznaczenie punktu
@@ -267,16 +276,17 @@ if __name__ == "__main__":
                     break
 
         # Numerowanie od 1 z przyjętego standardu, że współrzędne wymienia się jako (x_1, x_2, ..., x_n)
-        lista_wspolrzednych = list()
+        lista_wspolrzednych = []
         for indeks_wspolrzednej in range(1, wymiar+1):
             while True:
                 try:
-                    lista_wspolrzednych.append(float(input('Wpisz współrzędną x{}: '.format(indeks_wspolrzednej))))
+                    lista_wspolrzednych.append(
+                        float(input('Wpisz współrzędną x{}: '.format(indeks_wspolrzednej))))
                     break
-                except:
+                except Exception:
                     print('Niepoprawna odpowiedź!')
                     print('Podaj liczbę rzeczywistą!')
-            
+
         # Tutaj tworzymy punkt
         lista_punktow.append(lista_wspolrzednych)
         if wlasne_oznaczenia == True:
@@ -285,27 +295,28 @@ if __name__ == "__main__":
         else:
             Punkt(indeks_punktu, lista_wspolrzednych)
             print('Utworzono punkt numer {}.'.format(indeks_punktu))
-    
 
     # Tutaj użytkownik podaje maksymalną długość pozwalającą
     # na powstanie krawędzi pomiędzy dwoma wierzchołkami
     while True:
         try:
-            print('Epsilon to maksymalna możliwa odległość pozwalająca na połączenie punktów krawędzią.')
+            print(
+                'Epsilon to maksymalna możliwa odległość pozwalająca na połączenie punktów krawędzią.')
             print('Ile wynosi epsilon?')
             epsilon = float(input('Wpisz tutaj: '))
             if epsilon <= 0:
                 print('Epsilon musi być dodatnie!')
             else:
                 break
-        except:
+        except Exception:
             print('Niepoprawna odpowiedź!')
             print('Podaj dodatnią liczbę rzeczywistą!')
 
     # Utworzenie obiektu kompleksu
     print('Kompleks się tworzy...')
     if wlasne_oznaczenia == True:
-        kompleks = Kompleks_Vietorigo_Ripsa(lista_punktow, epsilon, lista_oznaczen)
+        kompleks = Kompleks_Vietorigo_Ripsa(
+            lista_punktow, epsilon, lista_oznaczen)
     else:
         kompleks = Kompleks_Vietorigo_Ripsa(lista_punktow, epsilon)
     print('Kompleks utworzony!')
@@ -316,11 +327,16 @@ if __name__ == "__main__":
         odpowiedz = input('Wpisz komendę tutaj: ')
 
         if odpowiedz.lower() == 'instrukcja':
-            print('Niech 1, 2 oraz 3 będą kolejnymi wierzchołkami w grafie połączonymi krawędziami.')
-            print('Poprzez (1,) rozumiemy sympleks zerowego wymiaru składający się z pierwszego wierzchołka.')
-            print('Poprzez (1,2) rozumiemy sympleks drugiego wymiaru łączący pierwsze dwa wierzchołki.')
-            print('Poprzez (1,2,3) rozumiemy sympleks trzeciego wymiaru, który zawiera wszystkie wierzchołki.')
-            print('Reguła odczytywania także zachodzi odpowiednio dla większych wymiarów.')
+            print(
+                'Niech 1, 2 oraz 3 będą kolejnymi wierzchołkami w grafie połączonymi krawędziami.')
+            print(
+                'Poprzez (1,) rozumiemy sympleks zerowego wymiaru składający się z pierwszego wierzchołka.')
+            print(
+                'Poprzez (1,2) rozumiemy sympleks drugiego wymiaru łączący pierwsze dwa wierzchołki.')
+            print(
+                'Poprzez (1,2,3) rozumiemy sympleks trzeciego wymiaru, który zawiera wszystkie wierzchołki.')
+            print(
+                'Reguła odczytywania także zachodzi odpowiednio dla większych wymiarów.')
 
         elif odpowiedz.lower() == 'wszystko':
             print('Sympleksy: {}'.format(kompleks.wypisz_sciany()))
@@ -333,9 +349,10 @@ if __name__ == "__main__":
                     if szukany_wymiar < 0:
                         print('Wymiar musi być nieujemny!')
                     else:
-                        print('Sympleksy: {}'.format(kompleks.wypisz_sciany_danego_wymiaru(szukany_wymiar)))
+                        print('Sympleksy: {}'.format(
+                            kompleks.wypisz_sciany_danego_wymiaru(szukany_wymiar)))
                         break
-                except:
+                except Exception:
                     print('Niepoprawna odpowiedź!')
                     print('Podaj liczbę naturalną!')
 
@@ -343,7 +360,8 @@ if __name__ == "__main__":
             print('Sympleksy: {}'.format(kompleks.lista_sympleksow))
 
         elif odpowiedz.lower() == 'kompleks':
-            print('Wymiar kompleksu wynosi {}.'.format(kompleks.podaj_wymiar_kompleksu()))
+            print('Wymiar kompleksu wynosi {}.'.format(
+                kompleks.podaj_wymiar_kompleksu()))
 
         elif odpowiedz.lower() == 'epsilon':
             while True:
@@ -351,10 +369,10 @@ if __name__ == "__main__":
                     print('Podaj nową wartość epsilon.')
                     epsilon = float(input('Wpisz tutaj: '))
                     if epsilon <= 0:
-                       print('Epsilon musi być dodatnie!')
+                        print('Epsilon musi być dodatnie!')
                     else:
                         break
-                except:
+                except Exception:
                     print('Niepoprawna odpowiedź!')
                     print('Podaj niezerową liczbę rzeczywistą!')
             kompleks.zmien_epsilon(epsilon)
@@ -362,11 +380,12 @@ if __name__ == "__main__":
 
         elif odpowiedz.lower() == 'koniec':
             break
-        
+
         elif odpowiedz.lower() == 'komendy':
             wypisz_komendy()
 
         else:
             print('Niepoprawna komenda!')
             print('Napisz jeszcze raz!')
-            print('W razie potrzeby, napisz "komendy" w celu ponownego wyświetlenia dostępnych komend.')
+            print(
+                'W razie potrzeby, napisz "komendy" w celu ponownego wyświetlenia dostępnych komend.')
