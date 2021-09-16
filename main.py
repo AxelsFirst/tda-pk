@@ -1,4 +1,4 @@
-# Autorami programu są Alex Gibała i Piotr Musielak
+# Autorami programu jest Alex Gibała 
 # Jesteśmy studentami matematyki stosowanej na Politechnice Krakowskiej
 
 # Program służy do szukania sympleksów w kompleksie Vietorigo-Ripsa
