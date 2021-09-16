@@ -1,19 +1,14 @@
-    # grupy homologii
-    # operator brzegów w kompleksie
-    # założenie, że pracujemy w ciele Z2
-    # liczby Bettiego
+ # Autorami programu są Alex Gibała i Piotr Musielak
+ # Jesteśmy studentami matematyki stosowanej na Politechnice Krakowskiej
 
-    # Topologia stosowana i topologia algebraiczna
-    # Topologiczna analiza danych
+ # Program służy do szukania sympleksów w kompleksie Vietorigo-Ripsa
+ # Program zostanie w przyszłości rozbudowany o kolejne funkcje
 
 # Biblioteka z kombinatoryki została wykorzystana za pomocą funkcji combinations()
 from itertools import combinations
 
 # Biblioteka umożliwia dodawanie w miejscach wcześniech niemożliwych
 from operator import add
-
-# Biblioteka najprawdopodobniej niepotrzebna
-#from scipy.sparse import dok_matrix
 
 # Biblioteka networkx jest wykorzystana w celu stworzenia grafu oraz rozwiązania problemu znalezienia 
 # kliki, czyli takiego podzbioru wierzchołków, że dwa dowolne i różne od siebie wierzchołki są sąsiednie
@@ -26,6 +21,7 @@ from scipy.spatial import distance
 from itertools import product
 
 # Klasa punktów leżących na przestrzeni euklidesowej R^n
+# Klasa najprawdopodobniej niepotrzebna
 class Punkt:
 
     # Obiekt punktu przyjmuje:
@@ -139,41 +135,55 @@ class Kompleks_Vietorigo_Ripsa:
 
     # Metoda wykorzystuje powyższą metodę w celu zwrócenia wszystkich ścian (krawędzi) dowolnego wymiaru
     def wypisz_sciany(self):
-        self.lista_sympleksow = self.znajdz_sympleksy()
         zbior_scian = set()
+
+        # Za każdy sympleks ze zbioru sympleksów (bez powtórek)
+        #   sprawdźmy ile wierzchołków zawiera sympleks
+        #   za każdy możliwy wymiar ściany (liczony od największego do 0 wymiaru)
+        #       liczymy możliwe kombinacje n-elementowe ścian, gdzie n to wymiar ściany
+        #           dodajemy każdą ścianę do zbioru
         for sympleks in self.lista_sympleksow:
             liczba_wierzcholkow = len(sympleks)
             for wymiar_sciany in range(liczba_wierzcholkow, 0, -1):
                 for sciana in combinations(sympleks, wymiar_sciany):
                     zbior_scian.add(sciana)
+
+        # Zwracamy zbiór wszystkich możliwych ścian
         return tuple(zbior_scian)
 
     # Metoda wykorzystuje powyższą metodę w celu zwrócenia ścian o danym wymiarze
     def wypisz_sciany_danego_wymiaru(self, szukany_wymiar):
         zbior_scian = self.wypisz_sciany()
-        print(tuple(filter(lambda sciana: len(sciana)==szukany_wymiar + 1, zbior_scian)))
+
+        # Tutaj filtrujemy zbiór ścian z poprzedniej funkcji szukając ścian o porządanym wymiarze
         return tuple(filter(lambda sciana: len(sciana)==szukany_wymiar + 1, zbior_scian))
-        # return tuple(filter(filtr_scian, zbior_scian))
+
+    # Metoda zwraca wymiar kompleksu (czyli wymiar maksymalnego sympleksu)
+    def podaj_wymiar_kompleksu(self):
+        maksymalny_wymiar = 0
+        for sympleks in self.lista_sympleksow:
+            if  maksymalny_wymiar < len(sympleks)-1:
+                maksymalny_wymiar = len(sympleks)-1
+        return maksymalny_wymiar
 
     # Metoda zmienia wartość epsilona i jednocześnie aktualizuje krawędzie w grafie
     def zmien_epsilon(self, epsilon):
         self.epsilon = epsilon
         self.usun_krawedzie()
         self.utworz_krawedzie()
-
-# def filtr_scian(sciana, szukany_wymiar):
-#     if len(sciana) == szukany_wymiar + 1:
-#         return True
-#     else:
-#         return False
+        self.lista_sympleksow = self.znajdz_sympleksy()
 
 # Funkcja wypisuje komendy przydatne po utworzeniu obiektu kompleksu
 def wypisz_komendy():
-    print('W celu wypisania sympleksów, napisz "wypisz".')
-    print('W celu wypisania sympleksów danego stopnia, napisz "wypisz danego wymiaru".')
-    print('W celu wypisania sympleksów z wyjątkiem tych, które nie będą się zawierać w innych, napisz "wypisz bez powtórek"')
-    print('W celu zmiany epsilona, napisz "epsilon".')
-    print('W celu wyłączenia programu, napisz "koniec".')
+    print('W celu:')
+    print('-otrzymania instrukcji odczytania wyników, napisz "instrukcja",')
+    print('-wypisania wszystkich sympleksów, napisz "wszystko",')
+    print('-wypisania sympleksów danego wymiaru, napisz "tylko",')
+    print('-wypisania sympleksów z wyjątkiem tych, które nie będą się zawierać w innych, napisz "maksymalne",')
+    print('-wypisania wymiaru kompleksu, napisz "kompleks",')
+    print('-zmiany epsilona, napisz "epsilon",')
+    print('-wyłączenia programu, napisz "koniec",')
+    print('-ponownego wypisania komend, napisz "komendy".')
 
 # Tutaj zaczyna się właściwy program
 if __name__ == "__main__":
@@ -301,16 +311,21 @@ if __name__ == "__main__":
     print('Kompleks utworzony!')
 
     # Pętla w celu zapobiegnięcia potrzeby uruchamiania programu parę razy
+    wypisz_komendy()
     while True:
-        wypisz_komendy()
-        odpowiedz = input('Wpisz tutaj: ')
+        odpowiedz = input('Wpisz komendę tutaj: ')
 
-        if odpowiedz.lower() == 'wypisz':
-            print('Sympleksy:')
-            print(kompleks.wypisz_sciany())
+        if odpowiedz.lower() == 'instrukcja':
+            print('Niech 1, 2 oraz 3 będą kolejnymi wierzchołkami w grafie połączonymi krawędziami.')
+            print('Poprzez (1,) rozumiemy sympleks zerowego wymiaru składający się z pierwszego wierzchołka.')
+            print('Poprzez (1,2) rozumiemy sympleks drugiego wymiaru łączący pierwsze dwa wierzchołki.')
+            print('Poprzez (1,2,3) rozumiemy sympleks trzeciego wymiaru, który zawiera wszystkie wierzchołki.')
+            print('Reguła odczytywania także zachodzi odpowiednio dla większych wymiarów.')
 
-        elif odpowiedz.lower() == 'wypisz danego wymiaru':
-            print('Podaj wymiar szukanych sympleksów.')
+        elif odpowiedz.lower() == 'wszystko':
+            print('Sympleksy: {}'.format(kompleks.wypisz_sciany()))
+
+        elif odpowiedz.lower() == 'tylko':
             while True:
                 try:
                     print('Jaki jest wymiar szukanych sympleksów?')
@@ -318,17 +333,17 @@ if __name__ == "__main__":
                     if szukany_wymiar < 0:
                         print('Wymiar musi być nieujemny!')
                     else:
+                        print('Sympleksy: {}'.format(kompleks.wypisz_sciany_danego_wymiaru(szukany_wymiar)))
                         break
                 except:
                     print('Niepoprawna odpowiedź!')
                     print('Podaj liczbę naturalną!')
-                
-                print('Sympleksy:')
-                print(kompleks.wypisz_sciany_danego_wymiaru(szukany_wymiar))
 
-        elif odpowiedz.lower() == 'wypisz bez powtórek':
-            print('Sympleksy:')
-            print(kompleks.lista_sympleksow)
+        elif odpowiedz.lower() == 'maksymalne':
+            print('Sympleksy: {}'.format(kompleks.lista_sympleksow))
+
+        elif odpowiedz.lower() == 'kompleks':
+            print('Wymiar kompleksu wynosi {}.'.format(kompleks.podaj_wymiar_kompleksu()))
 
         elif odpowiedz.lower() == 'epsilon':
             while True:
@@ -343,10 +358,15 @@ if __name__ == "__main__":
                     print('Niepoprawna odpowiedź!')
                     print('Podaj niezerową liczbę rzeczywistą!')
             kompleks.zmien_epsilon(epsilon)
+            print('Zmieniono wartość epsilon!')
 
         elif odpowiedz.lower() == 'koniec':
             break
+        
+        elif odpowiedz.lower() == 'komendy':
+            wypisz_komendy()
 
         else:
             print('Niepoprawna komenda!')
             print('Napisz jeszcze raz!')
+            print('W razie potrzeby, napisz "komendy" w celu ponownego wyświetlenia dostępnych komend.')

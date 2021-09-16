@@ -13,3 +13,13 @@ Korzystając z powyższej zależności, to jeśli istnieje sympleks S n-tego sto
 
 ### Informacja o złożoności obliczeniowej
 Ze względu na złożoność obliczeniową w celu testowania programu zaleca się użycia dostatecznie małej ilości punktów.
+
+### Notatki dla autorów
+
+grupy homologii
+operator brzegów w kompleksie
+założenie, że pracujemy w ciele Z2
+liczby Bettiego
+
+Topologia stosowana i topologia algebraiczna
+Topologiczna analiza danych
