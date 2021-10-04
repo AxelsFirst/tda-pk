@@ -43,8 +43,9 @@ class Kompleks_Vietorigo_Ripsa:
     # - epsilon będący maksymalną możliwą odległością do zarejestrowania krawędzi,
     # - (opcjonalnie) zbiór własnych oznaczeń wierzchołków,
     # - (opcjonalnie, nie zaimplementowane w praktyce) własną metrykę - standardowo metryka euklidesowa
-    def __init__(self, punkty, epsilon, oznaczenia=None, metryka=distance.euclidean):
+    def __init__(self, punkty, liczba_punktow, epsilon, oznaczenia=None, metryka=distance.euclidean):
         self.punkty = punkty
+        self.liczba_punktow = liczba_punktow
         self.epsilon = epsilon
 
         # Jeśli nie podano oznaczeń funkcja sama ponumeruje (zaczynając od 1 z powodu przyjętego standardu)
@@ -53,10 +54,15 @@ class Kompleks_Vietorigo_Ripsa:
         self.metryka = metryka
 
         # Utworzenie grafu
-        self.graf = self.utworz_graf()
+        self.utworz_graf()
+
+        # Obliczenie liczb Betti'ego
+        self.oblicz_liczby_Bettiego_grafu()
 
         # Szukanie sympleksów
         self.lista_sympleksow = self.znajdz_sympleksy()
+
+
 
         # # Szukanie sympleksów (bez zewnętrznej metody)
         # lista_sympleksow = map(tuple, list(networkx.find_cliques(self.graf)))
@@ -66,31 +72,35 @@ class Kompleks_Vietorigo_Ripsa:
     def utworz_graf(self):
 
         # Utworzenie obiektu grafu nieskierowanego
-        graf = networkx.Graph()
+        self.graf = networkx.Graph()
 
         # Utworzenie wierzchołków z oznaczeń,
         # każdej nazwie przyporządkowany jest wierzchołek
-        graf.add_nodes_from(self.oznaczenia)
+        self.graf.add_nodes_from(self.oznaczenia)
 
-        # Przyporządkowanie wierzchołkom właściwe punkty (a dokładniej ich współrzędne)
-        lista_punktów_z_oznaczeniami = tuple(zip(self.punkty, self.oznaczenia))
+        # Utworzenie krawędzi w grafie
+        self.graf.utworz_krawedzie()
 
-        # Za każdą parę dwóch wierzchołków (product() można zastąpić zagnieżdżoną pętlą)
-        #   jeśli oznaczenia wierzchołków są różne
-        #       oblicz odległość pomiędzy punktami,
-        #       jeśli odległość jest mniejsza niż przyjęte epsilon
-        #           utwórz bok prowadzący z jednego wierzchołka do drugiego
-        for para in product(lista_punktów_z_oznaczeniami, lista_punktów_z_oznaczeniami):
-            if para[0][1] != para[1][1]:
-                odleglosc = self.metryka(para[0][0], para[1][0])
-                if odleglosc < self.epsilon:
-                    graf.add_edge(para[0][1], para[1][1])
+        # # Przyporządkowanie wierzchołkom właściwe punkty (a dokładniej ich współrzędne)
+        # lista_punktów_z_oznaczeniami = tuple(zip(self.punkty, self.oznaczenia))
 
-        # Utworzony graf zostaje zwrócony
-        return graf
+        # # Za każdą parę dwóch wierzchołków (product() można zastąpić zagnieżdżoną pętlą)
+        # #   jeśli oznaczenia wierzchołków są różne
+        # #       oblicz odległość pomiędzy punktami,
+        # #       jeśli odległość jest mniejsza niż przyjęte epsilon
+        # #           utwórz bok prowadzący z jednego wierzchołka do drugiego
+        # for para in product(lista_punktów_z_oznaczeniami, lista_punktów_z_oznaczeniami):
+        #     if para[0][1] != para[1][1]:
+        #         odleglosc = self.metryka(para[0][0], para[1][0])
+        #         if odleglosc < self.epsilon:
+        #             graf.add_edge(para[0][1], para[1][1])
+
+        return self.graf
 
     # Metoda podobna do powyższej, tylko nie tworzy nowego grafu i nie tworzy nowych wierzchołków, tylko dodaje nowe krawędzie
     def utworz_krawedzie(self):
+        self.liczba_krawedzi = 0
+
         # Przyporządkowanie wierzchołkom właściwe punkty (a dokładniej ich współrzędne)
         lista_punktów_z_oznaczeniami = tuple(zip(self.punkty, self.oznaczenia))
 
@@ -104,6 +114,7 @@ class Kompleks_Vietorigo_Ripsa:
                 odleglosc = self.metryka(para[0][0], para[1][0])
                 if odleglosc < self.epsilon:
                     self.graf.add_edge(para[0][1], para[1][1])
+                    self.liczba_krawedzi += 1
 
     # Metoda podobna do powyższej, tylko usuwa wszystkie pozostałe krawędzie zamiast dodawać nowych
     def usun_krawedzie(self):
@@ -178,6 +189,32 @@ class Kompleks_Vietorigo_Ripsa:
         self.usun_krawedzie()
         self.utworz_krawedzie()
         self.lista_sympleksow = self.znajdz_sympleksy()
+
+    # Metoda oblicza liczby Betti'ego grafu
+    def oblicz_liczby_Bettiego_grafu(self):
+        # Nieformalnie, k-ta liczba Betti'ego odpowiada za liczbę 
+        # k-wymiarowych dziur na topologicznej przestrzeni
+
+        # Zerowa liczba Betti'ego grafu nieskierowanego to liczba spójnych składowych
+        # Spójna składowa to maksymalny spójny podgraf grafu nieskierowanego
+        self.zerowa_liczba_Bettiego_grafu = networkx.number_connected_componets(self.graf)
+
+        # Pierwsza liczba Betti'ego grafu nieskierowanego równa się liczbie cyklomatrycznej
+        # Liczba cyklomatryczna = liczba spójnych składowych + liczba krawędzi - liczba wierzchołków
+        self.pierwsza_liczba_Bettiego_grafu = self.zerowa_liczba_Bettiego_grafu + self.liczba_krawedzi - self.liczba_punktow
+
+        # Pozostałe liczby Betti'ego grafu są równe 0
+        self.pozostała_liczba_Bettiego_grafu = 0
+
+    # Metoda oblicza liczby Betti'ego sympleksu
+    # Funkcja oczywiście niedokończona
+    def oblicz_liczby_Bettiego_sympleksu(self, sympleks):
+        return None
+
+    # # Metoda najprawdopodobniej niepotrzebna
+    # def oblicz_liczbe_cyklomatryczna(self):
+    #     liczba_spojnych_skladowych = networkx.number_connected_componets(self.graf)
+    #     return self.liczba_krawedzi - self.liczba_punktow + liczba_spojnych_skladowych
 
 # Funkcja wypisuje komendy przydatne po utworzeniu obiektu kompleksu
 
@@ -316,9 +353,9 @@ if __name__ == "__main__":
     print('Kompleks się tworzy...')
     if wlasne_oznaczenia == True:
         kompleks = Kompleks_Vietorigo_Ripsa(
-            lista_punktow, epsilon, lista_oznaczen)
+            lista_punktow, liczba_punktow, epsilon, lista_oznaczen)
     else:
-        kompleks = Kompleks_Vietorigo_Ripsa(lista_punktow, epsilon)
+        kompleks = Kompleks_Vietorigo_Ripsa(lista_punktow, liczba_punktow, epsilon)
     print('Kompleks utworzony!')
 
     # Pętla w celu zapobiegnięcia potrzeby uruchamiania programu parę razy
