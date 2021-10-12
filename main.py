@@ -79,7 +79,7 @@ class Kompleks_Vietorigo_Ripsa:
         self.graf.add_nodes_from(self.oznaczenia)
 
         # Utworzenie krawędzi w grafie
-        self.graf.utworz_krawedzie()
+        self.utworz_krawedzie()
 
         # # Przyporządkowanie wierzchołkom właściwe punkty (a dokładniej ich współrzędne)
         # lista_punktów_z_oznaczeniami = tuple(zip(self.punkty, self.oznaczenia))
@@ -97,7 +97,7 @@ class Kompleks_Vietorigo_Ripsa:
 
         return self.graf
 
-    # Metoda podobna do powyższej, tylko nie tworzy nowego grafu i nie tworzy nowych wierzchołków, tylko dodaje nowe krawędzie
+    # Metoda tworzy nowe krawędzie w grafie
     def utworz_krawedzie(self):
         self.liczba_krawedzi = 0
 
