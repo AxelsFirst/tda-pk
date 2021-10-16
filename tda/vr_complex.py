@@ -43,7 +43,7 @@ class VietorisRipsComplex(object):
         self.faces = None
         self.simplices = None
 
-    def creategraph(self):
+    def create_graph(self):
         """
 
         Create a graph from points.
@@ -179,7 +179,7 @@ class VietorisRipsComplex(object):
         return max_dim
 
     @property
-    def zeroth_betti_numbergraph(self):
+    def zeroth_betti_number_graph(self):
         """
 
         Calculate the zeroth Betti number of the graph
@@ -193,7 +193,7 @@ class VietorisRipsComplex(object):
         return nx.number_connected_components(self.graph)
 
     @property
-    def first_betti_numbergraph(self):
+    def first_betti_number_graph(self):
         """
 
         Calculate the first Betti number of the graph
@@ -204,7 +204,7 @@ class VietorisRipsComplex(object):
 
         """
 
-        return self.zeroth_betti_numbergraph + self.n_edges - self.n_points
+        return self.zeroth_betti_number_graph + self.n_edges - self.n_points
 
     @property
     def betti_number_complex(self):
