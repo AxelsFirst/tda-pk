@@ -157,7 +157,7 @@ class VietorisRipsComplex(object):
 
         """
 
-        if epsilon < 0:
+        if epsilon <= 0:
             raise ValueError('Epsilon has to be greater than 0.')
 
         self.simplices = None
@@ -182,7 +182,7 @@ class VietorisRipsComplex(object):
     def zeroth_betti_number_graph(self):
         """
 
-        Calculate the zeroth Betti number of the graph
+        Calculate the zeroth Betti number of the graph.
 
         References:
         ----------
@@ -196,7 +196,7 @@ class VietorisRipsComplex(object):
     def first_betti_number_graph(self):
         """
 
-        Calculate the first Betti number of the graph
+        Calculate the first Betti number of the graph.
 
         References:
         ----------
