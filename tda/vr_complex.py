@@ -9,7 +9,7 @@ class VietorisRipsComplex(object):
 
     References:
     -----------
-        https://en.wikipedia.org/wiki/Vietoris%E2%80%93Rips_complex
+    https://en.wikipedia.org/wiki/Vietoris%E2%80%93Rips_complex
 
     """
 
@@ -27,11 +27,11 @@ class VietorisRipsComplex(object):
 
         """
 
-        if epsilon < 0:
+        if epsilon <= 0:
             raise ValueError('Epsilon has to be greater than 0.')
 
-        if len(points) < 1:
-            raise ValueError('List of points cannot be empty')
+        if not points:
+            raise ValueError('List of points cannot be empty.')
 
         self.points = points
         self.epsilon = epsilon
@@ -96,7 +96,7 @@ class VietorisRipsComplex(object):
         Find simplices in graph.
 
         Notes:
-        -----
+        ------
         This function will not list simplices that are contained in other
         simplices.
 
@@ -134,6 +134,7 @@ class VietorisRipsComplex(object):
         Find faces of a given dimension.
 
         Parameters:
+        -----------
         dim : int
             A non-negative integer.
 
@@ -185,7 +186,7 @@ class VietorisRipsComplex(object):
         Calculate the zeroth Betti number of the graph.
 
         References:
-        ----------
+        -----------
         https://en.wikipedia.org/wiki/Betti_number
 
         """
@@ -199,7 +200,7 @@ class VietorisRipsComplex(object):
         Calculate the first Betti number of the graph.
 
         References:
-        ----------
+        -----------
         https://en.wikipedia.org/wiki/Betti_number
 
         """
