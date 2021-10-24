@@ -117,6 +117,7 @@ class VietorisRipsComplex(object):
         simplices = list(map(lambda s: tuple(s), simplices))
         self.simplices = tuple(simplices)
         return self.simplices
+
     def find_faces(self):
         """
 
@@ -209,26 +210,69 @@ class VietorisRipsComplex(object):
             self.max_dim = max(self.max_dim, len(s) - 1)
         return self.max_dim
 
-    @property
-    def boundary_operator_matrix(self, n, assign = False):
+    def check_nesting(self, higher_simplices, lower_simplices):
         """
-        
+
+        Find which simplices are nested in others.
+
+        Parameters:
+        -----------
+        higher_simplices : tuple
+            A tuple of simplices of higher dimension.
+        lower_simplices : tuple
+            A tuple of simplices of lower dimension.
+
+        Output:
+        -------
+        nested_simplices : dict
+            A dictionary of nested simplices.
+        present_lower_simplices : list
+            A list of simplices that are present as values in dictionary.
+
+        Notes:
+        ------
+        Simplices have to be of one higher dimension that the others.
+
+        """
+
+        nested_simplices = {}
+        present_lower_simplices = []
+        for higher_simplex in higher_simplices:
+            copied_lower_simplices = []
+            temporary_lower_simplices = []
+
+            for i in len(higher_simplex):
+                copied_simplex = higher_simplex.copy()
+                copied_simplex.pop(i)
+                copied_lower_simplices.append(copied_simplex)
+
+            for lower_simplex in lower_simplices:
+                if lower_simplex in copied_lower_simplices:
+                    temporary_lower_simplices.append(lower_simplex)
+                    if lower_simplex not in present_lower_simplices:
+                        present_lower_simplices.append(lower_simplex)
+
+            nested_simplices[higher_simplex] = temporary_lower_simplices
+
+        return nested_simplices, present_lower_simplices
+
+    def boundary_operator_matrix(self, n):
+        """
+
         Calculate matrix of a n-th boundary operator.
 
         Parameters:
         -----------
         n : int
             A non-negative integer.
-        assign : bool (default False)
-            If True method also outputs dictionaries of assignments of row and column to simplices.
 
         Output:
         -------
-        boundary_operator_matrix : list
+        boundary_matrix : list
             Matrix of a n-th boundary operator.
-        matrix_rows_dict: dict
+        matrix_rows: dict
             Dictionary of rows of the matrix.
-        matrix_columns_dict: dict
+        matrix_cols: dict
             Dictionary of columns of the matrix.
 
         Notes:
@@ -239,77 +283,72 @@ class VietorisRipsComplex(object):
 
         if n < 0:
             raise ValueError('"n" has to be a non-negative integer.')
-        elif assign is not bool:
-            raise ValueError('assign is not a bool.')
 
-        higher_dim_simplicies = self.find_faces_with_dim(n+1)
-        lower_dim_simplicies = self.find_faces_with_dim(n)
+        higher_simplices = self.find_faces_with_dim(n+1)
+        lower_simplices = self.find_faces_with_dim(n)
 
-        boundary_operator_matrix = []
-        boundary_operator_dict = {}
-        existing_lower_dim_simplicies_list = []
-        for higher_dim_simplex in higher_dim_simplicies:
-            copied_lower_dim_simplicies_list = []
-            temporary_lower_dim_simplicies_list = []
+        boundary_dict, present_lower_simplices = self.check_nesting(
+            higher_simplices, lower_simplices)
 
-            for i in len(higher_dim_simplex):
-                copied_simplex = higher_dim_simplex.copy()
-                copied_simplex.pop(i)
-                copied_lower_dim_simplicies_list.append(copied_simplex)
-
-            for lower_dim_simplex in lower_dim_simplicies:
-                if lower_dim_simplex in copied_lower_dim_simplicies_list:
-                    temporary_lower_dim_simplicies_list.append(lower_dim_simplex)
-                    if lower_dim_simplex not in existing_lower_dim_simplicies_list:
-                        existing_lower_dim_simplicies_list.append(lower_dim_simplex)
-            
-            boundary_operator_dict[higher_dim_simplex] = temporary_lower_dim_simplicies_list
-
-        matrix_rows_dict = {}
-        reversed_matrix_rows_dict = {}
+        boundary_matrix = []
+        matrix_rows = {}
+        reversed_matrix_rows = {}
         row_index = 0
-        for lower_dim_simplex in existing_lower_dim_simplicies_list:
-            boundary_operator_matrix.append([])
-            matrix_rows_dict[row_index] = lower_dim_simplex
-            reversed_matrix_rows_dict[lower_dim_simplex] = row_index
-            row_index += 1 
+        for lower_simplex in present_lower_simplices:
+            boundary_matrix.append([])
+            matrix_rows[row_index] = lower_simplex
+            reversed_matrix_rows[lower_simplex] = row_index
+            row_index += 1
 
-        matrix_columns_dict = {}
-        column_index = 0
-        for higher_dim_simplex in higher_dim_simplicies:
-            for row in boundary_operator_matrix:
+        matrix_cols = {}
+        col_index = 0
+        for higher_simplex in higher_simplices:
+            for row in boundary_matrix:
                 row.append(0)
 
-            list_of_faces = boundary_operator_dict[higher_dim_simplex]
+            list_of_faces = boundary_dict[higher_simplex]
             for face in list_of_faces:
-                row_index = reversed_matrix_rows_dict[face]
-                boundary_operator_matrix[row_index][column_index] = 1
+                row_index = reversed_matrix_rows[face]
+                boundary_matrix[row_index][col_index] = 1
 
-            matrix_rows_dict[column_index] = higher_dim_simplex
-            column_index += 1
+            matrix_cols[col_index] = higher_simplex
+            col_index += 1
 
-        if assign == False:
-            return boundary_operator_matrix
-        else:
-            return boundary_operator_matrix, matrix_rows_dict, matrix_columns_dict
+        return boundary_matrix, matrix_rows, matrix_cols
 
     @property
-    def betti_numbers(self, n = None):
+    def betti_numbers(self):
         """
-        
-        Calculate Betti numbers of the Vietoris-Rips complex.
 
-        Parameters:
-        -----------
-        n : int (default None)
-            A non-negative integer.
+        Calculate Betti numbers of the Vietoris-Rips complex.
 
         Outputs:
         --------
         betti_numbers : list
             List of Betti numbers of a complex.
-        betti_number : int 
-            n-th Betti number.
+
+        Notes:
+        ------
+        The operation of chain group is addition with Z_2 coefficients.
+
+        References:
+        -----------
+        https://en.wikipedia.org/wiki/Betti_number
+        https://youtu.be/gVq_xXnwV-4
+
+        """
+
+        raise NotImplementedError()
+
+    def nth_betti_number(self, n):
+        """
+
+        Calculate n-th Betti number of the Vietoris-Rips complex.
+
+        Outputs:
+        --------
+        nth-betti_number : int
+            N-th Betti number of a complex.
 
         Notes:
         ------
