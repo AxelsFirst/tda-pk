@@ -1,5 +1,6 @@
 from itertools import combinations, product
 import networkx as nx
+from copy import copy
 
 
 class VietorisRipsComplex(object):
@@ -241,10 +242,10 @@ class VietorisRipsComplex(object):
             copied_lower_simplices = []
             temporary_lower_simplices = []
 
-            for i in len(higher_simplex):
-                copied_simplex = higher_simplex.copy()
-                copied_simplex.pop(i)
-                copied_lower_simplices.append(copied_simplex)
+            for point_index in range(len(higher_simplex)):
+                copied_simplex = list(copy(higher_simplex))
+                copied_simplex.pop(point_index)
+                copied_lower_simplices.append(tuple(copied_simplex))
 
             for lower_simplex in lower_simplices:
                 if lower_simplex in copied_lower_simplices:
@@ -316,7 +317,6 @@ class VietorisRipsComplex(object):
 
         return boundary_matrix, matrix_rows, matrix_cols
 
-    @property
     def betti_numbers(self):
         """
 
