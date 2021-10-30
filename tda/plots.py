@@ -9,6 +9,9 @@ from scipy.spatial import ConvexHull
 
 def draw_graph(complex, **kwargs):
 
+    if complex.points and len(complex.points[0].coords) != 2:
+        raise Exception('Only 2d plots are supported.')
+
     # Plot settings
     fig, ax = plt.subplots()
     fig.set_figheight(kwargs['fig_width'])
