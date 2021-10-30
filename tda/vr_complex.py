@@ -371,16 +371,27 @@ class VietorisRipsComplex(object):
     def from_data_frame(cls, df, columns, epsilon, metric=None, prefix=''):
         """
 
+        Create a Vietoris-Rips complex from a pandas DataFrame.
+
         Parameters:
         -----------
         df: pd.Dataframe
             A dataframe of numeric values.
         columns: list
             List of columns. The columns should contain coordinates of points.
+        epsilon: float
+            A positive real number.
         metric: callable
             A function that calculates distance between `Point` objects.
+        prefix: str
+            The name of a point will be create by concatenating the prefix
+            with the index.
 
         """
+
+        for col in columns:
+            if col not in df:
+                raise ValueError(f'DataFrame does not contain column {col}')
 
         pts = list()
         if metric is None:
@@ -392,5 +403,35 @@ class VietorisRipsComplex(object):
         return cls(pts, epsilon, metric)
 
     @classmethod
-    def from_list():
-        raise NotImplementedError()
+    def from_list(cls, names, coords, epsilon, metric=None, prefix=''):
+        """
+
+        Create a Vietoris-Rips complex from a list of names and points.
+
+        Parameters:
+        -----------
+        names: list
+            A list of names of points.
+        coords: list
+            A list of coordinates.
+        epsilon: float
+            A positive real number.
+        metric: callable
+            A function that calculates distance between `Point` objects.
+        prefix: str
+            A prefix to be added to names.
+
+        """
+
+        if len(names) != len(coords):
+            raise ValueError('Labels and coordinates'
+                             'should have the same length')
+
+        if metric is None:
+            metric = euclidean_metric
+
+        pts = list()
+        for name, coord in zip(names, coords):
+            p = Point(name=f'{prefix}{name}', coords=coord)
+            pts.append(p)
+        return cls(pts, epsilon, metric)
