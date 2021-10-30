@@ -381,9 +381,10 @@ class VietorisRipsComplex(object):
             List of columns. The columns should contain coordinates of points.
         epsilon: float
             A positive real number.
-        metric: callable
+        metric: callable, optional
             A function that calculates distance between `Point` objects.
-        prefix: str
+            If None the Euclidean metric will be used.
+        prefix: str, optional
             The name of a point will be create by concatenating the prefix
             with the index.
 
@@ -416,9 +417,10 @@ class VietorisRipsComplex(object):
             A list of coordinates.
         epsilon: float
             A positive real number.
-        metric: callable
+        metric: callable, optional
             A function that calculates distance between `Point` objects.
-        prefix: str
+            If None the Euclidean metric will be used.
+        prefix: str, optional
             A prefix to be added to names.
 
         """
