@@ -1,5 +1,6 @@
 from itertools import combinations, product
 import networkx as nx
+from copy import copy
 
 
 class VietorisRipsComplex(object):
@@ -17,7 +18,7 @@ class VietorisRipsComplex(object):
         """
 
         Parameters:
-        ----------
+        -----------
         points: list
             A list of `Point` objects.
         epsilon: float
@@ -42,6 +43,7 @@ class VietorisRipsComplex(object):
         self.n_edges = None
         self.faces = None
         self.simplices = None
+        self.max_dim = None
 
     def create_graph(self):
         """
@@ -66,7 +68,7 @@ class VietorisRipsComplex(object):
     def _add_edges(self):
         """
 
-        Add edges to the graph
+        Add edges to the graph.
 
         """
 
@@ -95,6 +97,11 @@ class VietorisRipsComplex(object):
 
         Find simplices in graph.
 
+        Output:
+        -------
+        simplices : tuple
+            Tuple of maximal simplices in the complex.
+
         Notes:
         ------
         This function will not list simplices that are contained in other
@@ -109,13 +116,23 @@ class VietorisRipsComplex(object):
 
         simplices = tuple(nx.find_cliques(self.graph))
         simplices = list(map(lambda s: tuple(s), simplices))
-        self.simplices = simplices
-        return tuple(simplices)
+        self.simplices = tuple(simplices)
+        return self.simplices
 
     def find_faces(self):
         """
 
         Find faces.
+
+        Output:
+        -------
+        faces : tuple
+            Tuple of faces.
+
+        References:
+        -----------
+        https://en.wikipedia.org/wiki/Clique_(graph_theory)
+        https://en.wikipedia.org/wiki/Simplex
 
         """
 
@@ -137,6 +154,16 @@ class VietorisRipsComplex(object):
         -----------
         dim : int
             A non-negative integer.
+
+        Output:
+        -------
+        faces : tuple
+            Tuple of faces of the given dimension.
+
+        References:
+        -----------
+        https://en.wikipedia.org/wiki/Clique_(graph_theory)
+        https://en.wikipedia.org/wiki/Simplex
 
         """
 
@@ -170,47 +197,168 @@ class VietorisRipsComplex(object):
     def complex_dimension(self):
         """
 
-        Calculate the dimension of the complex.
+        Calculate the dimension of the simplicial complex.
+
+        Output:
+        -------
+        max_dim : int
+            Dimension of the simplicial complex
 
         """
 
-        max_dim = 0
+        self.max_dim = 0
         for s in self.simplices:
-            max_dim = max(max_dim, len(s) - 1)
-        return max_dim
+            self.max_dim = max(self.max_dim, len(s) - 1)
+        return self.max_dim
 
-    @property
-    def zeroth_betti_number_graph(self):
+    def check_nesting(self, higher_simplices, lower_simplices):
         """
 
-        Calculate the zeroth Betti number of the graph.
+        Find which simplices are nested in others.
+
+        Parameters:
+        -----------
+        higher_simplices : tuple
+            A tuple of simplices of higher dimension.
+        lower_simplices : tuple
+            A tuple of simplices of lower dimension.
+
+        Output:
+        -------
+        nested_simplices : dict
+            A dictionary of nested simplices.
+
+        Notes:
+        ------
+        Simplices have to be of one higher dimension that the others.
 
         References:
         -----------
         https://en.wikipedia.org/wiki/Betti_number
+        develop
 
         """
 
-        return nx.number_connected_components(self.graph)
+        nested_simplices = {}
+        for higher_simplex in higher_simplices:
+            copied_lower_simplices = []
+            temporary_lower_simplices = []
 
-    @property
-    def first_betti_number_graph(self):
+            for point_index in range(len(higher_simplex)):
+                copied_simplex = list(copy(higher_simplex))
+                copied_simplex.pop(point_index)
+                copied_lower_simplices.append(tuple(copied_simplex))
+
+            for lower_simplex in lower_simplices:
+                if lower_simplex in copied_lower_simplices:
+                    temporary_lower_simplices.append(lower_simplex)
+
+            nested_simplices[higher_simplex] = temporary_lower_simplices
+
+        return nested_simplices
+
+    def boundary_operator_matrix(self, n):
         """
 
-        Calculate the first Betti number of the graph.
+        Calculate matrix of a n-th boundary operator.
+
+        Parameters:
+        -----------
+        n : int
+            A non-negative integer.
+
+        Output:
+        -------
+        boundary_matrix : list
+            Matrix of a n-th boundary operator.
+        matrix_rows: dict
+            Dictionary of rows of the matrix.
+        matrix_cols: dict
+            Dictionary of columns of the matrix.
+
+        Notes:
+        ------
+        The operation of chain group is addition with Z_2 coefficients.
+
+        """
+
+        if n < 0:
+            raise ValueError('"n" has to be a non-negative integer.')
+
+        higher_simplices = self.find_faces_with_dim(n+1)
+        lower_simplices = self.find_faces_with_dim(n)
+
+        boundary_dict = self.check_nesting(
+            higher_simplices, lower_simplices)
+
+        boundary_matrix = []
+        matrix_rows = {}
+        reversed_matrix_rows = {}
+        row_index = 0
+        for lower_simplex in lower_simplices:
+            boundary_matrix.append([])
+            matrix_rows[row_index] = lower_simplex
+            reversed_matrix_rows[lower_simplex] = row_index
+            row_index += 1
+
+        matrix_cols = {}
+        col_index = 0
+        for higher_simplex in higher_simplices:
+            for row in boundary_matrix:
+                row.append(0)
+
+            list_of_faces = boundary_dict[higher_simplex]
+            for face in list_of_faces:
+                row_index = reversed_matrix_rows[face]
+                boundary_matrix[row_index][col_index] = 1
+
+            matrix_cols[col_index] = higher_simplex
+            col_index += 1
+
+        return boundary_matrix, matrix_rows, matrix_cols
+
+    def betti_numbers(self):
+        """
+
+        Calculate Betti numbers of the Vietoris-Rips complex.
+
+        Outputs:
+        --------
+        betti_numbers : list
+            List of Betti numbers of a complex.
+
+        Notes:
+        ------
+        The operation of chain group is addition with Z_2 coefficients.
 
         References:
         -----------
         https://en.wikipedia.org/wiki/Betti_number
+        https://youtu.be/gVq_xXnwV-4
 
         """
 
-        return self.zeroth_betti_number_graph + self.n_edges - self.n_points
-
-    @property
-    def betti_number_complex(self):
         raise NotImplementedError()
 
-    @property
-    def cyclomatic_number(self):
+    def nth_betti_number(self, n):
+        """
+
+        Calculate n-th Betti number of the Vietoris-Rips complex.
+
+        Outputs:
+        --------
+        nth-betti_number : int
+            N-th Betti number of a complex.
+
+        Notes:
+        ------
+        The operation of chain group is addition with Z_2 coefficients.
+
+        References:
+        -----------
+        https://en.wikipedia.org/wiki/Betti_number
+        https://youtu.be/gVq_xXnwV-4
+
+        """
+
         raise NotImplementedError()
