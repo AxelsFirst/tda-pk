@@ -3,16 +3,24 @@ from itertools import combinations, product
 
 import networkx as nx
 
-from .metrics import euclidean_metric
-from .point import Point
-
-from .utils import are_unique
+from tda.metrics import euclidean_metric
+from tda.point import Point
+from tda.utils import are_unique
 
 
 class VietorisRipsComplex(object):
     """
 
     Representation of the Vietoris-Rips complex.
+
+    Parameters:
+    -----------
+    points: list
+        A list of `Point` objects.
+    epsilon: float
+        A positive real number.
+    metric: callable
+        A function that calculates distance between `Point` objects.
 
     References:
     -----------
@@ -21,18 +29,6 @@ class VietorisRipsComplex(object):
     """
 
     def __init__(self, points, epsilon, metric, validate_points=True):
-        """
-
-        Parameters:
-        -----------
-        points: list
-            A list of `Point` objects.
-        epsilon: float
-            A positive real number.
-        metric: callable
-            A function that calculates distance between `Point` objects.
-
-        """
 
         if epsilon <= 0:
             raise ValueError('Epsilon has to be greater than 0.')
