@@ -362,3 +362,11 @@ class VietorisRipsComplex(object):
         """
 
         raise NotImplementedError()
+
+    @classmethod
+    def from_data_frame():
+        raise NotImplementedError()
+
+    @classmethod
+    def from_list():
+        raise NotImplementedError()
