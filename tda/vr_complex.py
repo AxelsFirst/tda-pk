@@ -1,6 +1,10 @@
-from itertools import combinations, product
-import networkx as nx
 from copy import copy
+from itertools import combinations, product
+
+import networkx as nx
+
+from .metrics import euclidean_metric
+from .point import Point
 
 
 class VietorisRipsComplex(object):
@@ -364,8 +368,28 @@ class VietorisRipsComplex(object):
         raise NotImplementedError()
 
     @classmethod
-    def from_data_frame():
-        raise NotImplementedError()
+    def from_data_frame(cls, df, columns, epsilon, metric=None, prefix=''):
+        """
+
+        Parameters:
+        -----------
+        df: pd.Dataframe
+            A dataframe of numeric values.
+        columns: list
+            List of columns. The columns should contain coordinates of points.
+        metric: callable
+            A function that calculates distance between `Point` objects.
+
+        """
+
+        pts = list()
+        if metric is None:
+            metric = euclidean_metric
+        for index, row in df[columns].iterrows():
+            p = Point(name=f'{prefix}{index}', coords=row.to_list())
+            pts.append(p)
+
+        return cls(pts, epsilon, metric)
 
     @classmethod
     def from_list():
