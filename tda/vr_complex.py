@@ -227,8 +227,6 @@ class VietorisRipsComplex(object):
         -------
         nested_simplices : dict
             A dictionary of nested simplices.
-        present_lower_simplices : list
-            A list of simplices that are present as values in dictionary.
 
         Notes:
         ------
@@ -237,7 +235,6 @@ class VietorisRipsComplex(object):
         """
 
         nested_simplices = {}
-        present_lower_simplices = []
         for higher_simplex in higher_simplices:
             copied_lower_simplices = []
             temporary_lower_simplices = []
@@ -250,12 +247,10 @@ class VietorisRipsComplex(object):
             for lower_simplex in lower_simplices:
                 if lower_simplex in copied_lower_simplices:
                     temporary_lower_simplices.append(lower_simplex)
-                    if lower_simplex not in present_lower_simplices:
-                        present_lower_simplices.append(lower_simplex)
 
             nested_simplices[higher_simplex] = temporary_lower_simplices
 
-        return nested_simplices, present_lower_simplices
+        return nested_simplices
 
     def boundary_operator_matrix(self, n):
         """
@@ -288,14 +283,14 @@ class VietorisRipsComplex(object):
         higher_simplices = self.find_faces_with_dim(n+1)
         lower_simplices = self.find_faces_with_dim(n)
 
-        boundary_dict, present_lower_simplices = self.check_nesting(
+        boundary_dict = self.check_nesting(
             higher_simplices, lower_simplices)
 
         boundary_matrix = []
         matrix_rows = {}
         reversed_matrix_rows = {}
         row_index = 0
-        for lower_simplex in present_lower_simplices:
+        for lower_simplex in lower_simplices:
             boundary_matrix.append([])
             matrix_rows[row_index] = lower_simplex
             reversed_matrix_rows[lower_simplex] = row_index
