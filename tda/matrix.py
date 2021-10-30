@@ -8,30 +8,6 @@ class Matrix(object):
 
     """
 
-    def __new__(cls, entries):
-        """
-
-        Check whether entries can create a matrix.
-
-        Parameters:
-        -----------
-        entries: list
-            Two dimensional list of entries.
-
-        Notes:
-        ------
-        Entries have to be integers.
-
-        """
-
-        desired_length = len(entries[0])
-        for row in entries:
-            if desired_length != len(row):
-                raise ValueError(
-                    'Each row has to have exact amount of entries!')
-
-        return super(Matrix, cls).__new__(cls, entries)
-
     def __init__(self, entries):
         """
 
