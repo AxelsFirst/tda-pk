@@ -107,6 +107,24 @@ class TestFindSimplices(unittest.TestCase):
         simplices = self.vcr.find_simplices()
         self.assertEqual(len(simplices), 58)
 
+    def test_find_simplices_random_graph_3(self):
+        random.seed(123)
+        names, coords = list(), list()
+        for i in range(100):
+            names.append(str(i))
+            coords.append([random.random() for _ in range(2)])
+
+        self.vcr = VietorisRipsComplex.from_list(
+            names=names,
+            coords=coords,
+            epsilon=1/2
+        )
+
+        self.vcr.create_graph()
+
+        simplices = self.vcr.find_simplices()
+        self.assertEqual(len(simplices), 329)
+
 
 if __name__ == '__main__':
     unittest.main()
