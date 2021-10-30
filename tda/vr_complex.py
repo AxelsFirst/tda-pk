@@ -10,7 +10,7 @@ class VietorisRipsComplex(object):
 
     References:
     -----------
-        https://en.wikipedia.org/wiki/Vietoris%E2%80%93Rips_complex
+    https://en.wikipedia.org/wiki/Vietoris%E2%80%93Rips_complex
 
     """
 
@@ -28,11 +28,11 @@ class VietorisRipsComplex(object):
 
         """
 
-        if epsilon < 0:
+        if epsilon <= 0:
             raise ValueError('Epsilon has to be greater than 0.')
 
-        if len(points) < 1:
-            raise ValueError('List of points cannot be empty')
+        if not points:
+            raise ValueError('List of points cannot be empty.')
 
         self.points = points
         self.epsilon = epsilon
@@ -231,6 +231,11 @@ class VietorisRipsComplex(object):
         Notes:
         ------
         Simplices have to be of one higher dimension that the others.
+
+        References:
+        -----------
+        https://en.wikipedia.org/wiki/Betti_number
+        develop
 
         """
 
