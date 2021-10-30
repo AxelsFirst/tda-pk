@@ -2,6 +2,8 @@ from itertools import combinations, product
 import networkx as nx
 from copy import copy
 
+from .utils import are_unique
+
 
 class VietorisRipsComplex(object):
     """
@@ -14,7 +16,7 @@ class VietorisRipsComplex(object):
 
     """
 
-    def __init__(self, points, epsilon, metric):
+    def __init__(self, points, epsilon, metric, validate_points=True):
         """
 
         Parameters:
@@ -33,6 +35,10 @@ class VietorisRipsComplex(object):
 
         if not points:
             raise ValueError('List of points cannot be empty.')
+
+        if validate_points:
+            if not are_unique(points):
+                raise ValueError('Points passed as input are not unique.')
 
         self.points = points
         self.epsilon = epsilon
