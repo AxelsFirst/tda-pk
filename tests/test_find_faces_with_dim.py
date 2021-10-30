@@ -105,5 +105,6 @@ class TestFindFaces(unittest.TestCase):
         self.assertEqual(len(self.vcr.find_faces_with_dim(2)), 66)
         self.assertEqual(len(self.vcr.find_faces_with_dim(3)), 59)
 
+
 if __name__ == '__main__':
     unittest.main()
