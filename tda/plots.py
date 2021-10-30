@@ -204,7 +204,12 @@ def plot_faces(
             color = [random.random() for _ in range(3)]
         else:
             color = face_color
-        polygon = Polygon(coords, alpha=face_alpha, zorder=-1, color=color)
+        polygon = Polygon(
+            coords,
+            alpha=face_alpha,
+            zorder=-1,
+            color=color
+        )
         ax.add_artist(polygon)
 
     plt.tight_layout()
