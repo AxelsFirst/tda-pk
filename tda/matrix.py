@@ -1,4 +1,4 @@
-from copy import copy
+from copy import copy, deepcopy
 
 
 class Matrix(object):
@@ -207,3 +207,64 @@ class Matrix(object):
                 return True
 
         return False
+
+    def smith_normal_form(self):
+        """
+
+        Calculate Smith normal form of a matrix.
+
+        Output:
+        -------
+        snf: matrix
+            Smith normal form of a matrix.
+
+        Notes:
+        ------
+        The method uses modulo 2 addition.
+        Entries of the matrix have to be 0 or 1.
+
+        """
+
+        snf = deepcopy(self)
+        max_dim = min(snf.num_rows, snf.num_cols)
+
+        for current_dim in range(max_dim):
+            value_check = snf.make_non_zero_diagonal_entry(current_dim)
+
+            if value_check is True:
+                for row_index in range(current_dim+1, snf.num_rows):
+                    if snf.entries[row_index][current_dim] == 1:
+                        snf.add_rows(row_index, current_dim)
+
+                for col_index in range(current_dim+1, snf.num_cols):
+                    if snf.entries[current_dim][col_index] == 1:
+                        snf.add_cols(col_index, current_dim)
+
+        return snf
+
+    def smith_normal_form_rank(self):
+        """
+
+        Calculate rank of Smith normal form of a matrix.
+
+        Output:
+        -------
+        snf_rank: int
+            Rank of Smith normal form of a matrix.
+
+        Notes:
+        ------
+        The method uses modulo 2 addition.
+        Entries of the matrix have to be 0 or 1.
+
+        """
+
+        snf = self.smith_normal_form_rank()
+        max_dim = min(snf.num_rows, snf.num_cols)
+
+        snf_rank = 0
+        for i in range(max_dim):
+            if snf.entries[i][i] == 1:
+                snf_rank += 1
+
+        return snf_rank
