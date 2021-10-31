@@ -24,6 +24,8 @@ class TestFindSimplices(unittest.TestCase):
 
         simplices = self.vrc.find_simplices()
 
+        # In a full graph with four nodes there is one maximal simplex
+        # that consists of four points.
         self.assertEqual(len(simplices), 1)
         names = sorted(p.name for p in simplices[0])
         self.assertEqual(names, ['A', 'B', 'C', 'D'])

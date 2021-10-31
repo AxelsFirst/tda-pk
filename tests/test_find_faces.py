@@ -24,6 +24,11 @@ class TestFindFaces(unittest.TestCase):
 
         faces = list(self.vcr.find_faces())
 
+        # In a full graph with four nodes there should be:
+        # 1. four points
+        # 2. four sides + two diagonals
+        # 3. four triangles
+        # 4. one square
         self.assertEqual(len(list(filter(lambda x: len(x) == 1, faces))), 4)
         self.assertEqual(len(list(filter(lambda x: len(x) == 2, faces))), 6)
         self.assertEqual(len(list(filter(lambda x: len(x) == 3, faces))), 4)

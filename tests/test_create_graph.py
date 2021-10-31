@@ -24,8 +24,12 @@ class TestCreateGraph(unittest.TestCase):
 
         self.assertIsNotNone(self.vrc.graph)
 
+        # The number of edges in a connected graph is n * (n - 1) / 2
         number_of_edges = int(len(names) * (len(names) - 1) / 2)
         self.assertEqual(self.vrc.graph.number_of_edges(), number_of_edges)
+
+        # In a connected graph, each there should be an edge between each
+        # distinct pair of nodes.
         for p1 in self.vrc.points:
             for p2 in self.vrc.points:
                 if p1 != p2:

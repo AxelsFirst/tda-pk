@@ -22,6 +22,9 @@ class TestComplexDimension(unittest.TestCase):
 
         self.vrc.create_graph()
         self.vrc.find_simplices()
+
+        # For a connected graph the complex dimension is the
+        # number of nodes - 1.
         self.assertEqual(self.vrc.complex_dimension, 3)
 
     def test_complex_dimension_3_points(self):
@@ -36,6 +39,8 @@ class TestComplexDimension(unittest.TestCase):
 
         self.vrc.create_graph()
         self.vrc.find_simplices()
+
+        # For a null graph the complex dimension is zero.
         self.assertEqual(self.vrc.complex_dimension, 0)
 
 
