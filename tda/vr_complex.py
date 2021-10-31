@@ -146,8 +146,9 @@ class VietorisRipsComplex(object):
         for s in self.simplices:
             n_edges = len(s)
             for face_dim in range(n_edges, 0, -1):
-                for f in combinations(s, face_dim):
-                    faces.add(f)
+                for face in combinations(s, face_dim):
+                    curr_face = tuple(sorted(face, key=lambda x: x.name))
+                    faces.add(curr_face)
         self.faces = tuple(faces)
         return self.faces
 

@@ -51,7 +51,7 @@ class TestFindFacesWithDim(unittest.TestCase):
         self.vrc.find_simplices()
 
         self.assertEqual(len(self.vrc.find_faces_with_dim(0)), 10)
-        self.assertEqual(len(self.vrc.find_faces_with_dim(1)), 23)
+        self.assertEqual(len(self.vrc.find_faces_with_dim(1)), 22)
         self.assertEqual(len(self.vrc.find_faces_with_dim(2)), 19)
         self.assertEqual(len(self.vrc.find_faces_with_dim(3)), 7)
 
@@ -101,9 +101,9 @@ class TestFindFacesWithDim(unittest.TestCase):
         self.vrc.find_simplices()
 
         self.assertEqual(len(self.vrc.find_faces_with_dim(0)), 10)
-        self.assertEqual(len(self.vrc.find_faces_with_dim(1)), 37)
-        self.assertEqual(len(self.vrc.find_faces_with_dim(2)), 66)
-        self.assertEqual(len(self.vrc.find_faces_with_dim(3)), 59)
+        self.assertEqual(len(self.vrc.find_faces_with_dim(1)), 35)
+        self.assertEqual(len(self.vrc.find_faces_with_dim(2)), 60)
+        self.assertEqual(len(self.vrc.find_faces_with_dim(3)), 55)
 
 
 if __name__ == '__main__':
