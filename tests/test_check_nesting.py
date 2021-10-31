@@ -46,7 +46,7 @@ class TestCheckNesting(unittest.TestCase):
 
         for k, v in boundary.items():
             for simplex in v:
-                self.assertEquals(len(simplex), 1)
+                self.assertEqual(len(simplex), 1)
 
         # Keys are 1-simplexes, which are made of two 0-simplexes.
         for k, v in boundary.items():
