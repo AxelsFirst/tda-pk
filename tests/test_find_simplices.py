@@ -14,15 +14,15 @@ class TestFindSimplices(unittest.TestCase):
         names = ['A', 'B', 'C', 'D']
         coords = [[0, 0], [1, 0], [0, 1], [1, 1]]
 
-        self.vcr = VietorisRipsComplex.from_list(
+        self.vrc = VietorisRipsComplex.from_list(
             names=names,
             coords=coords,
             epsilon=float('inf')
         )
 
-        self.vcr.create_graph()
+        self.vrc.create_graph()
 
-        simplices = self.vcr.find_simplices()
+        simplices = self.vrc.find_simplices()
 
         self.assertEqual(len(simplices), 1)
         names = sorted(p.name for p in simplices[0])
@@ -32,15 +32,15 @@ class TestFindSimplices(unittest.TestCase):
         names = ['A', 'B', 'C', 'D', 'E', 'F']
         coords = [[0, 0], [1, 1], [2, 2], [3, 3], [4, 4], [5, 5]]
 
-        self.vcr = VietorisRipsComplex.from_list(
+        self.vrc = VietorisRipsComplex.from_list(
             names=names,
             coords=coords,
             epsilon=1/2
         )
 
-        self.vcr.create_graph()
+        self.vrc.create_graph()
 
-        simplices = self.vcr.find_simplices()
+        simplices = self.vrc.find_simplices()
         names = list()
         for simplex in simplices:
             names.append(simplex[0].name)
@@ -53,15 +53,15 @@ class TestFindSimplices(unittest.TestCase):
         coords = [[0, 0], [1, 0], [0, 1],
                   [10, 10], [11, 10], [11, 11]]
 
-        self.vcr = VietorisRipsComplex.from_list(
+        self.vrc = VietorisRipsComplex.from_list(
             names=names,
             coords=coords,
             epsilon=2
         )
 
-        self.vcr.create_graph()
+        self.vrc.create_graph()
 
-        simplices = self.vcr.find_simplices()
+        simplices = self.vrc.find_simplices()
 
         self.assertEqual(len(simplices), 2)
 
@@ -78,15 +78,15 @@ class TestFindSimplices(unittest.TestCase):
             names.append(str(i))
             coords.append([random.random() for _ in range(2)])
 
-        self.vcr = VietorisRipsComplex.from_list(
+        self.vrc = VietorisRipsComplex.from_list(
             names=names,
             coords=coords,
             epsilon=1/5
         )
 
-        self.vcr.create_graph()
+        self.vrc.create_graph()
 
-        simplices = self.vcr.find_simplices()
+        simplices = self.vrc.find_simplices()
         self.assertEqual(len(simplices), 17)
 
     def test_find_simplices_random_graph_2(self):
@@ -96,15 +96,15 @@ class TestFindSimplices(unittest.TestCase):
             names.append(str(i))
             coords.append([random.random() for _ in range(2)])
 
-        self.vcr = VietorisRipsComplex.from_list(
+        self.vrc = VietorisRipsComplex.from_list(
             names=names,
             coords=coords,
             epsilon=1/2
         )
 
-        self.vcr.create_graph()
+        self.vrc.create_graph()
 
-        simplices = self.vcr.find_simplices()
+        simplices = self.vrc.find_simplices()
         self.assertEqual(len(simplices), 58)
 
     def test_find_simplices_random_graph_3(self):
@@ -114,15 +114,15 @@ class TestFindSimplices(unittest.TestCase):
             names.append(str(i))
             coords.append([random.random() for _ in range(2)])
 
-        self.vcr = VietorisRipsComplex.from_list(
+        self.vrc = VietorisRipsComplex.from_list(
             names=names,
             coords=coords,
             epsilon=1/2
         )
 
-        self.vcr.create_graph()
+        self.vrc.create_graph()
 
-        simplices = self.vcr.find_simplices()
+        simplices = self.vrc.find_simplices()
         self.assertEqual(len(simplices), 329)
 
 

@@ -2,11 +2,11 @@ import os
 import sys
 import unittest
 import string
-import random
 
 sys.path.append(os.path.join(os.getcwd(), '.'))
 
 from tda.vr_complex import VietorisRipsComplex  # noqa: E402
+
 
 class TestCreateGraph(unittest.TestCase):
 
@@ -74,3 +74,7 @@ class TestCreateGraph(unittest.TestCase):
             for p2 in self.vrc.points:
                 if p1 != p2:
                     self.assertFalse(self.vrc.graph.has_edge(p1, p2))
+
+
+if __name__ == '__main__':
+    unittest.main()
