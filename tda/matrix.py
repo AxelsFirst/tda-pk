@@ -1,3 +1,6 @@
+from copy import copy
+
+
 class Matrix(object):
     """
 
@@ -162,3 +165,45 @@ class Matrix(object):
             summed_entries = (col_to_change(i) + col_to_add(i)) % 2
             summed_col.append(summed_entries)
         self.change_row(summed_col)
+
+    def make_non_zero_diagonal_entry(self, entry_index):
+        """
+
+        Arranges rows and cols so that specified entry on diagonal is non zero.
+
+        Parameters:
+        -----------
+        entry_index: int
+            Index of a row (and column) that contains the entry.
+
+        Output:
+        -------
+        value_check: bool
+            Boolean that tells whether the entry is not zero.
+
+        Notes:
+        ------
+        It will move rows, if non zero entry is below the desired place.
+        It will move columns, if non zero entry is right of the desired place.
+
+        """
+
+        for row_index in range(entry_index, self.num_rows):
+            if self.entries[row_index][entry_index] != 0:
+                if row_index != entry_index:
+                    copied_row = copy(self.get_row(row_index))
+                    copied_entry_row = copy(self.get_row(entry_index))
+                    self.change_row(entry_index, copied_row)
+                    self.change_row(row_index, copied_entry_row)
+                return True
+
+        for col_index in range(entry_index, self.num_cols):
+            if self.entries[entry_index][col_index] != 0:
+                if col_index != entry_index:
+                    copied_col = copy(self.get_col(col_index))
+                    copied_entry_col = copy(self.get_col(entry_index))
+                    self.change_col(entry_index, copied_col)
+                    self.change_col(col_index, copied_entry_col)
+                return True
+
+        return False
