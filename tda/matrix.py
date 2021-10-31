@@ -135,10 +135,10 @@ class Matrix(object):
         row_to_change = self.get_row(index_row_to_change)
         row_to_add = self.get_row(index_row_to_add)
         summed_row = []
-        for i in self.num_cols:
-            summed_entries = (row_to_change(i) + row_to_add(i)) % 2
+        for i in range(self.num_cols):
+            summed_entries = (row_to_change[i] + row_to_add[i]) % 2
             summed_row.append(summed_entries)
-        self.change_row(summed_row)
+        self.change_row(index_row_to_change, summed_row)
 
     def add_cols(self, index_col_to_change, index_col_to_add):
         """
@@ -161,10 +161,10 @@ class Matrix(object):
         col_to_change = self.get_col(index_col_to_change)
         col_to_add = self.get_col(index_col_to_add)
         summed_col = []
-        for i in self.num_rows:
-            summed_entries = (col_to_change(i) + col_to_add(i)) % 2
+        for i in range(self.num_rows):
+            summed_entries = (col_to_change[i] + col_to_add[i]) % 2
             summed_col.append(summed_entries)
-        self.change_row(summed_col)
+        self.change_row(index_col_to_change, summed_col)
 
     def make_non_zero_diagonal_entry(self, entry_index):
         """
