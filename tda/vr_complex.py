@@ -44,11 +44,12 @@ class VietorisRipsComplex(object):
         self.metric = metric
         self.n_points = len(points)
 
-        self.graph = None
+        self.graph = nx.Graph()
         self.n_edges = None
         self.faces = None
         self.simplices = None
         self.max_dim = None
+        self.faces = None
 
     def create_graph(self):
         """
@@ -57,7 +58,6 @@ class VietorisRipsComplex(object):
 
         """
 
-        self.graph = nx.Graph()
         self._add_vertices()
         self._add_edges()
 
@@ -74,6 +74,13 @@ class VietorisRipsComplex(object):
         """
 
         Add edges to the graph.
+
+        Notes:
+        ------
+        The graph is constructed by placing
+        an edge between each point such that
+        the distance between them is less than
+        epsilon.
 
         """
 
@@ -196,8 +203,15 @@ class VietorisRipsComplex(object):
         if epsilon <= 0:
             raise ValueError('Epsilon has to be greater than 0.')
 
-        self.simplices = None
         self.epsilon = epsilon
+
+        self.simplices = None
+        self.n_edges = None
+        self.faces = None
+        self.simplices = None
+        self.max_dim = None
+        self.faces = None
+
         self._remove_edges()
         self._add_edges()
 
