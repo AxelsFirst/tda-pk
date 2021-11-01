@@ -1,131 +1,108 @@
 import os
 import sys
 import unittest
-import random
 
 sys.path.append(os.path.join(os.getcwd(), '.'))
 
 from tda.vr_complex import VietorisRipsComplex  # noqa: E402
+from tests.graphs import graphs  # noqa: E402
 
 
 class TestFindSimplices(unittest.TestCase):
 
-    def test_find_simplices_4_vertices(self):
-        names = ['A', 'B', 'C', 'D']
-        coords = [[0, 0], [1, 0], [0, 1], [1, 1]]
+    def test_find_simplices_G1(self):
 
         self.vrc = VietorisRipsComplex.from_list(
-            names=names,
-            coords=coords,
-            epsilon=float('inf')
+            names=graphs['G1']['names'],
+            coords=graphs['G1']['coords'],
+            epsilon=graphs['G1']['epsilon']
         )
 
         self.vrc.create_graph()
-
         simplices = self.vrc.find_simplices()
-
-        # In a full graph with four nodes there is one maximal simplex
-        # that consists of four points.
         self.assertEqual(len(simplices), 1)
         names = sorted(p.name for p in simplices[0])
         self.assertEqual(names, ['A', 'B', 'C', 'D'])
 
-    def test_find_simplices_all_disconnected(self):
-        names = ['A', 'B', 'C', 'D', 'E', 'F']
-        coords = [[0, 0], [1, 1], [2, 2], [3, 3], [4, 4], [5, 5]]
+    def test_find_simplices_G2(self):
 
         self.vrc = VietorisRipsComplex.from_list(
-            names=names,
-            coords=coords,
-            epsilon=1/2
+            names=graphs['G2']['names'],
+            coords=graphs['G2']['coords'],
+            epsilon=graphs['G2']['epsilon']
         )
 
         self.vrc.create_graph()
-
         simplices = self.vrc.find_simplices()
-        names = list()
-        for simplex in simplices:
-            names.append(simplex[0].name)
+        self.assertEqual(len(simplices), 1)
+        names = sorted(p.name for p in simplices[0])
+        self.assertEqual(names, ['A', 'B', 'C'])
 
+    def test_find_simplices_G3(self):
+
+        self.vrc = VietorisRipsComplex.from_list(
+            names=graphs['G3']['names'],
+            coords=graphs['G3']['coords'],
+            epsilon=graphs['G3']['epsilon']
+        )
+
+        self.vrc.create_graph()
+        simplices = self.vrc.find_simplices()
+        self.assertEqual(len(simplices), 7)
+
+    def test_find_simplices_G4(self):
+
+        self.vrc = VietorisRipsComplex.from_list(
+            names=graphs['G4']['names'],
+            coords=graphs['G4']['coords'],
+            epsilon=graphs['G4']['epsilon']
+        )
+
+        self.vrc.create_graph()
+        simplices = self.vrc.find_simplices()
         self.assertEqual(len(simplices), 6)
-        self.assertEqual(sorted(names), ['A', 'B', 'C', 'D', 'E', 'F'])
 
-    def test_find_simplices_2_disconnected_graphs(self):
-        names = ['A', 'B', 'C', 'D', 'E', 'F']
-        coords = [[0, 0], [1, 0], [0, 1],
-                  [10, 10], [11, 10], [11, 11]]
+    def test_find_simplices_G5(self):
 
         self.vrc = VietorisRipsComplex.from_list(
-            names=names,
-            coords=coords,
-            epsilon=2
+            names=graphs['G5']['names'],
+            coords=graphs['G5']['coords'],
+            epsilon=graphs['G5']['epsilon']
         )
 
         self.vrc.create_graph()
-
         simplices = self.vrc.find_simplices()
-
         self.assertEqual(len(simplices), 2)
 
-        first = tuple(sorted(p.name for p in simplices[0]))
-        second = tuple(sorted(p.name for p in simplices[1]))
-        graphs = set([first, second])
-        self.assertIn(first, graphs)
-        self.assertIn(second, graphs)
-
-    def test_find_simplices_random_graph_1(self):
-        random.seed(123)
-        names, coords = list(), list()
-        for i in range(25):
-            names.append(str(i))
-            coords.append([random.random() for _ in range(2)])
+    def test_find_simplices_G6(self):
 
         self.vrc = VietorisRipsComplex.from_list(
-            names=names,
-            coords=coords,
-            epsilon=1/5
+            names=graphs['G6']['names'],
+            coords=graphs['G6']['coords'],
+            epsilon=graphs['G6']['epsilon']
         )
 
         self.vrc.create_graph()
-
         simplices = self.vrc.find_simplices()
-        self.assertEqual(len(simplices), 17)
+        self.assertEqual(len(simplices), 4)
 
-    def test_find_simplices_random_graph_2(self):
-        random.seed(123)
-        names, coords = list(), list()
-        for i in range(50):
-            names.append(str(i))
-            coords.append([random.random() for _ in range(2)])
+    def test_find_simplices_G7(self):
 
         self.vrc = VietorisRipsComplex.from_list(
-            names=names,
-            coords=coords,
-            epsilon=1/2
+            names=graphs['G7']['names'],
+            coords=graphs['G7']['coords'],
+            epsilon=graphs['G7']['epsilon']
         )
 
         self.vrc.create_graph()
-
         simplices = self.vrc.find_simplices()
-        self.assertEqual(len(simplices), 58)
+        self.assertEqual(len(simplices), 8)
 
-    def test_find_simplices_random_graph_3(self):
-        random.seed(123)
-        names, coords = list(), list()
-        for i in range(100):
-            names.append(str(i))
-            coords.append([random.random() for _ in range(2)])
+    def test_find_simplices_G8(self):
+        pass
 
-        self.vrc = VietorisRipsComplex.from_list(
-            names=names,
-            coords=coords,
-            epsilon=1/2
-        )
-
-        self.vrc.create_graph()
-
-        simplices = self.vrc.find_simplices()
-        self.assertEqual(len(simplices), 329)
+    def test_find_simplices_G9(self):
+        pass
 
 
 if __name__ == '__main__':
