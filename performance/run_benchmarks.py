@@ -205,14 +205,14 @@ def main():
     functions = [
         benchmark_create_graph,
         benchmark_find_simplices,
-        benchmark_find_faces,
+        # benchmark_find_faces,
         benchmark_find_faces_with_dim,
         benchmark_check_nesting,
         benchmark_boundary
     ]
 
     reps = 30
-    points = list(range(1, 21, 2))
+    points = list(range(1, 105, 5))
     for func in functions:
         times = list()
         for r in range(reps):
