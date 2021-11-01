@@ -5,69 +5,109 @@ import unittest
 sys.path.append(os.path.join(os.getcwd(), '.'))
 
 from tda.vr_complex import VietorisRipsComplex  # noqa: E402
+from tests.graphs import graphs  # noqa: E402
 
 
 class TestFindFaces(unittest.TestCase):
 
-    def test_find_faces_4_vertices(self):
-        names = ['A', 'B', 'C', 'D']
-        coords = [[0, 0], [1, 0], [0, 1], [1, 1]]
-
-        self.vcr = VietorisRipsComplex.from_list(
-            names=names,
-            coords=coords,
-            epsilon=float('inf')
+    def test_find_faces_G1(self):
+        self.vrc = VietorisRipsComplex.from_list(
+            names=graphs['G1']['names'],
+            coords=graphs['G1']['coords'],
+            epsilon=graphs['G1']['epsilon']
         )
 
-        self.vcr.create_graph()
-        self.vcr.find_simplices()
+        self.vrc.create_graph()
+        self.vrc.find_simplices()
+        self.assertEqual(len(self.vrc.find_faces()), 15)
 
-        faces = list(self.vcr.find_faces())
-
-        # In a full graph with four nodes there should be:
-        # 1. four points
-        # 2. four sides + two diagonals
-        # 3. four triangles
-        # 4. one square
-        self.assertEqual(len(list(filter(lambda x: len(x) == 1, faces))), 4)
-        self.assertEqual(len(list(filter(lambda x: len(x) == 2, faces))), 6)
-        self.assertEqual(len(list(filter(lambda x: len(x) == 3, faces))), 4)
-        self.assertEqual(len(list(filter(lambda x: len(x) == 4, faces))), 1)
-
-        names = list()
-        for face in faces:
-            names.append(''.join(sorted(p.name for p in face)))
-        names.sort()
-        names = ''.join(names)
-        self.assertEqual(names, 'AABABCABCDABDACACDADBBCBCDBDCCDD')
-
-    def test_find_faces_2_disconnected_graphs(self):
-        names = ['A', 'B', 'C', 'D', 'E', 'F']
-        coords = [[0, 0], [1, 0], [0, 1],
-                  [10, 10], [11, 10], [11, 11]]
-
-        self.vcr = VietorisRipsComplex.from_list(
-            names=names,
-            coords=coords,
-            epsilon=2
+    def test_find_faces_G2(self):
+        self.vrc = VietorisRipsComplex.from_list(
+            names=graphs['G2']['names'],
+            coords=graphs['G2']['coords'],
+            epsilon=graphs['G2']['epsilon']
         )
 
-        self.vcr.create_graph()
-        self.vcr.find_simplices()
+        self.vrc.create_graph()
+        self.vrc.find_simplices()
+        self.assertEqual(len(self.vrc.find_faces()), 7)
 
-        faces = list(self.vcr.find_faces())
+    def test_find_faces_G3(self):
+        self.vrc = VietorisRipsComplex.from_list(
+            names=graphs['G3']['names'],
+            coords=graphs['G3']['coords'],
+            epsilon=graphs['G3']['epsilon']
+        )
 
-        self.assertEqual(len(list(filter(lambda x: len(x) == 1, faces))), 6)
-        self.assertEqual(len(list(filter(lambda x: len(x) == 2, faces))), 6)
-        self.assertEqual(len(list(filter(lambda x: len(x) == 3, faces))), 2)
+        self.vrc.create_graph()
+        self.vrc.find_simplices()
+        self.assertEqual(len(self.vrc.find_faces()), 29)
 
-        names = list()
-        for face in faces:
-            names.append(''.join(sorted(p.name for p in face)))
-        names.sort()
-        names = ''.join(names)
+    def test_find_faces_G4(self):
+        self.vrc = VietorisRipsComplex.from_list(
+            names=graphs['G4']['names'],
+            coords=graphs['G4']['coords'],
+            epsilon=graphs['G4']['epsilon']
+        )
 
-        self.assertEqual(names, 'AABABCACBBCCDDEDEFDFEEFF')
+        self.vrc.create_graph()
+        self.vrc.find_simplices()
+        self.assertEqual(len(self.vrc.find_faces()), 6)
+
+    def test_find_faces_G5(self):
+        self.vrc = VietorisRipsComplex.from_list(
+            names=graphs['G5']['names'],
+            coords=graphs['G5']['coords'],
+            epsilon=graphs['G5']['epsilon']
+        )
+
+        self.vrc.create_graph()
+        self.vrc.find_simplices()
+        self.assertEqual(len(self.vrc.find_faces()), 14)
+
+    def test_find_faces_G6(self):
+        self.vrc = VietorisRipsComplex.from_list(
+            names=graphs['G6']['names'],
+            coords=graphs['G6']['coords'],
+            epsilon=graphs['G6']['epsilon']
+        )
+
+        self.vrc.create_graph()
+        self.vrc.find_simplices()
+        self.assertEqual(len(self.vrc.find_faces()), 21)
+
+    def test_find_faces_G7(self):
+        self.vrc = VietorisRipsComplex.from_list(
+            names=graphs['G7']['names'],
+            coords=graphs['G7']['coords'],
+            epsilon=graphs['G7']['epsilon']
+        )
+
+        self.vrc.create_graph()
+        self.vrc.find_simplices()
+        self.assertEqual(len(self.vrc.find_faces()), 29)
+
+    def test_find_faces_G8(self):
+        self.vrc = VietorisRipsComplex.from_list(
+            names=graphs['G8']['names'],
+            coords=graphs['G8']['coords'],
+            epsilon=graphs['G8']['epsilon']
+        )
+
+        self.vrc.create_graph()
+        self.vrc.find_simplices()
+        self.assertEqual(len(self.vrc.find_faces()), 59)
+
+    def test_find_faces_G9(self):
+        self.vrc = VietorisRipsComplex.from_list(
+            names=graphs['G9']['names'],
+            coords=graphs['G9']['coords'],
+            epsilon=graphs['G9']['epsilon']
+        )
+
+        self.vrc.create_graph()
+        self.vrc.find_simplices()
+        self.assertEqual(len(self.vrc.find_faces()), 1023)
 
 
 if __name__ == '__main__':
