@@ -1,5 +1,4 @@
-from copy import copy
-from itertools import combinations, product
+from itertools import combinations
 
 import networkx as nx
 
@@ -79,10 +78,12 @@ class VietorisRipsComplex(object):
         """
 
         self.n_edges = 0
-        for p1, p2 in product(self.points, self.points):
-            if p1 != p2 and self.metric(p1, p2) < self.epsilon:
-                self.graph.add_edge(p1, p2)
-                self.n_edges += 1
+        for i in range(len(self.points)):
+            for j in range(i + 1, len(self.points)):
+                p1, p2 = self.points[i], self.points[j]
+                if self.metric(p1, p2) < self.epsilon:
+                    self.graph.add_edge(p1, p2)
+                    self.n_edges += 1
 
     def _remove_edges(self):
         """
@@ -91,12 +92,7 @@ class VietorisRipsComplex(object):
 
         """
 
-        for p1, p2 in product(self.points, self.points):
-            if p1 != p2:
-                try:
-                    self.graph.remove_edge(p1, p2)
-                except nx.exception.NetworkXError:
-                    pass
+        self.graph.clear_edges()
 
     def find_simplices(self):
         """
@@ -120,9 +116,7 @@ class VietorisRipsComplex(object):
 
         """
 
-        simplices = tuple(nx.find_cliques(self.graph))
-        simplices = list(map(lambda s: tuple(s), simplices))
-        self.simplices = tuple(simplices)
+        self.simplices = tuple(map(tuple, nx.find_cliques(self.graph)))
         return self.simplices
 
     def find_faces(self):
@@ -177,8 +171,15 @@ class VietorisRipsComplex(object):
         if dim < 0:
             raise ValueError('A non-negative dimension was expected.')
 
-        self.faces = self.find_faces()
-        return tuple(filter(lambda f: len(f) == dim + 1, self.faces))
+        faces_with_dim = set()
+        for s in self.simplices:
+            if len(s) < dim:
+                continue
+            for face in combinations(s, dim + 1):
+                curr_face = tuple(sorted(face, key=lambda x: x.name))
+                faces_with_dim.add(curr_face)
+        faces_with_dim = tuple(faces_with_dim)
+        return faces_with_dim
 
     def change_epsilon(self, epsilon):
         """
@@ -246,23 +247,19 @@ class VietorisRipsComplex(object):
 
         """
 
-        nested_simplices = {}
-        for higher_simplex in higher_simplices:
-            copied_lower_simplices = []
-            temporary_lower_simplices = []
-
-            for point_index in range(len(higher_simplex)):
-                copied_simplex = list(copy(higher_simplex))
-                copied_simplex.pop(point_index)
-                copied_lower_simplices.append(tuple(copied_simplex))
-
-            for lower_simplex in lower_simplices:
-                if lower_simplex in copied_lower_simplices:
-                    temporary_lower_simplices.append(lower_simplex)
-
-            nested_simplices[higher_simplex] = temporary_lower_simplices
-
-        return nested_simplices
+        nested = dict()
+        for lower_simplex in lower_simplices:
+            for higher_simplex in higher_simplices:
+                is_nested = True
+                for p in lower_simplex:
+                    if p not in higher_simplex:
+                        is_nested = False
+                        break
+                if is_nested:
+                    if higher_simplex not in nested:
+                        nested[higher_simplex] = list()
+                    nested[higher_simplex].append(lower_simplex)
+        return nested
 
     def boundary_operator_matrix(self, n):
         """
