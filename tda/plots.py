@@ -198,17 +198,23 @@ def plot_faces(
         edge_color=edge_color
     )
 
+    if complex.simplices is None:
+        complex.find_simplices()
+
     for face in complex.find_faces_with_dim(face_dimension):
         coords = list()
         for f in face:
             coords.append(f.coords)
         coords = np.vstack(coords)
+
+        hull = ConvexHull(coords)
         if face_color is None:
             color = [random.random() for _ in range(3)]
         else:
             color = face_color
+
         polygon = Polygon(
-            coords,
+            hull.points[hull.vertices],
             alpha=face_alpha,
             zorder=-1,
             color=color
