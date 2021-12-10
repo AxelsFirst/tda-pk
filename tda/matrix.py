@@ -263,7 +263,7 @@ class Matrix(object):
 
         return snf
 
-    def smith_normal_form_rank(self):
+    def snf_rank(self):
         """
 
         Calculate rank of Smith normal form of a matrix.
@@ -275,17 +275,16 @@ class Matrix(object):
 
         Notes:
         ------
-        The method uses modulo 2 addition.
-        Entries of the matrix have to be 0 or 1.
+        The method uses modulo 2 addition, with exception of calculating rank
+        itself.
 
         """
 
-        snf = self.smith_normal_form_rank()
+        snf = self.snf()
         max_dim = min(snf.num_rows, snf.num_cols)
 
         snf_rank = 0
         for i in range(max_dim):
-            if snf.entries[i][i] == 1:
-                snf_rank += 1
+            snf_rank += snf.entries[i][i]
 
         return snf_rank
