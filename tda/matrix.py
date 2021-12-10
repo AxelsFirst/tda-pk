@@ -167,7 +167,7 @@ class Matrix(object):
             summed_col.append(summed_entries)
         self.change_row(index_col_to_change, summed_col)
 
-    def make_non_zero_diagonal_entry(self, entry_index):
+    def non_zero(self, entry_index):
         """
 
         Arranges rows and cols so that specified entry on diagonal is non zero.
@@ -253,7 +253,7 @@ class Matrix(object):
         max_dim = min(snf.num_rows, snf.num_cols)
 
         for dim in range(max_dim):
-            value_check = snf.make_non_zero_diagonal_entry(dim)
+            value_check = snf.non_zero(dim)
 
             if value_check is True:
                 for row_index in chain(range(dim), range(dim+1, snf.num_rows)):
