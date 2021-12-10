@@ -230,7 +230,7 @@ class Matrix(object):
 
         return False
 
-    def smith_normal_form(self):
+    def snf(self):
         """
 
         Calculate Smith normal form of a matrix.
@@ -243,7 +243,9 @@ class Matrix(object):
         Notes:
         ------
         The method uses modulo 2 addition.
-        Entries of the matrix have to be 0 or 1.
+
+        The method is not consistent with theory, but it is good enough
+        for getting rank of a matrix.
 
         """
 
