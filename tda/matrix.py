@@ -195,6 +195,13 @@ class Matrix(object):
 
         """
 
+        zero_row = True
+        for i in range(self.num_cols):
+            if self.entries[entry_index][i] != 0:
+                zero_row = False
+        if zero_row is True:
+            return False
+
         if self.entries[entry_index][entry_index] != 0:
             return True
 
@@ -210,7 +217,8 @@ class Matrix(object):
 
                 return True
 
-        for col_index in range(entry_index+1, self.num_cols):
+        for col_index in chain(range(entry_index),
+                               range(entry_index+1, self.num_cols)):
             if self.entries[entry_index][col_index] != 0:
                 copied_col = copy(self.get_col(col_index))
                 copied_entry_col = copy(self.get_col(entry_index))
@@ -248,6 +256,7 @@ class Matrix(object):
             if value_check is True:
                 for row_index in chain(range(dim), range(dim+1, snf.num_rows)):
                     if snf.entries[row_index][dim] == 1:
+                        print(snf.entries)
                         snf.add_rows(row_index, dim)
 
         return snf
