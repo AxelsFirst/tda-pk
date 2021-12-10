@@ -1,4 +1,5 @@
 from copy import copy, deepcopy
+from itertools import chain
 
 
 class Matrix(object):
@@ -228,17 +229,13 @@ class Matrix(object):
         snf = deepcopy(self)
         max_dim = min(snf.num_rows, snf.num_cols)
 
-        for current_dim in range(max_dim):
-            value_check = snf.make_non_zero_diagonal_entry(current_dim)
+        for dim in range(max_dim):
+            value_check = snf.make_non_zero_diagonal_entry(dim)
 
             if value_check is True:
-                for row_index in range(current_dim+1, snf.num_rows):
-                    if snf.entries[row_index][current_dim] == 1:
-                        snf.add_rows(row_index, current_dim)
-
-                for col_index in range(current_dim+1, snf.num_cols):
-                    if snf.entries[current_dim][col_index] == 1:
-                        snf.add_cols(col_index, current_dim)
+                for row_index in chain(range(dim), range(dim+1, snf.num_rows)):
+                    if snf.entries[row_index][dim] == 1:
+                        snf.add_rows(row_index, dim)
 
         return snf
 
