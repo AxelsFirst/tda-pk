@@ -184,27 +184,40 @@ class Matrix(object):
 
         Notes:
         ------
-        It will move rows, if non zero entry is below the desired place.
-        It will move columns, if non zero entry is right of the desired place.
+        Intended to use only in smith_normal_form method due to algorithm
+        optimizations.
+
+        It will move a row, if non zero entry is on the same column as the
+        desired place.
+
+        It will move a columns, if non zero entry is right of
+        the desired place.
 
         """
 
-        for row_index in range(entry_index, self.num_rows):
+        if self.entries[entry_index][entry_index] != 0:
+            return True
+
+        for row_index in chain(range(entry_index),
+                               range(entry_index+1, self.num_rows)):
+
             if self.entries[row_index][entry_index] != 0:
-                if row_index != entry_index:
-                    copied_row = copy(self.get_row(row_index))
-                    copied_entry_row = copy(self.get_row(entry_index))
-                    self.change_row(entry_index, copied_row)
-                    self.change_row(row_index, copied_entry_row)
+                copied_row = copy(self.get_row(row_index))
+                copied_entry_row = copy(self.get_row(entry_index))
+
+                self.change_row(entry_index, copied_row)
+                self.change_row(row_index, copied_entry_row)
+
                 return True
 
-        for col_index in range(entry_index, self.num_cols):
+        for col_index in range(entry_index+1, self.num_cols):
             if self.entries[entry_index][col_index] != 0:
-                if col_index != entry_index:
-                    copied_col = copy(self.get_col(col_index))
-                    copied_entry_col = copy(self.get_col(entry_index))
-                    self.change_col(entry_index, copied_col)
-                    self.change_col(col_index, copied_entry_col)
+                copied_col = copy(self.get_col(col_index))
+                copied_entry_col = copy(self.get_col(entry_index))
+
+                self.change_col(entry_index, copied_col)
+                self.change_col(col_index, copied_entry_col)
+
                 return True
 
         return False
