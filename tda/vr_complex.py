@@ -359,7 +359,11 @@ class VietorisRipsComplex(object):
 
         """
 
-        raise NotImplementedError()
+        betti = []
+        for i in range(self.max_dim):
+            betti.append(self.nth_betti_number(i))
+
+        return betti
 
     def nth_betti_number(self, n):
         """
