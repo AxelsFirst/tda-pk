@@ -258,7 +258,6 @@ class Matrix(object):
             if value_check is True:
                 for row_index in chain(range(dim), range(dim+1, snf.num_rows)):
                     if snf.entries[row_index][dim] == 1:
-                        print(snf.entries)
                         snf.add_rows(row_index, dim)
 
         return snf
