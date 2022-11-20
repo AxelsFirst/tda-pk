@@ -42,9 +42,6 @@ class TestCheckNesting(unittest.TestCase):
             epsilon=graphs['G1']['epsilon']
         )
 
-        self.vrc.create_graph()
-        self.vrc.find_simplices()
-
         lower_simplices = self.vrc.find_faces_with_dim(0)
         higher_simplices = self.vrc.find_faces_with_dim(1)
 
@@ -75,9 +72,6 @@ class TestCheckNesting(unittest.TestCase):
             epsilon=graphs['G2']['epsilon']
         )
 
-        self.vrc.create_graph()
-        self.vrc.find_simplices()
-
         self.check(0)
         self.check(1)
         self.check(2)
@@ -88,9 +82,6 @@ class TestCheckNesting(unittest.TestCase):
             coords=graphs['G3']['coords'],
             epsilon=graphs['G3']['epsilon']
         )
-
-        self.vrc.create_graph()
-        self.vrc.find_simplices()
 
         self.check(0)
         self.check(1)
@@ -103,9 +94,6 @@ class TestCheckNesting(unittest.TestCase):
             epsilon=graphs['G4']['epsilon']
         )
 
-        self.vrc.create_graph()
-        self.vrc.find_simplices()
-
         self.check(0)
         self.check(1)
         self.check(2)
@@ -116,9 +104,6 @@ class TestCheckNesting(unittest.TestCase):
             coords=graphs['G5']['coords'],
             epsilon=graphs['G5']['epsilon']
         )
-
-        self.vrc.create_graph()
-        self.vrc.find_simplices()
 
         lower_simplices = self.vrc.find_faces_with_dim(1)
         higher_simplices = self.vrc.find_faces_with_dim(2)
@@ -154,9 +139,6 @@ class TestCheckNesting(unittest.TestCase):
             epsilon=graphs['G6']['epsilon']
         )
 
-        self.vrc.create_graph()
-        self.vrc.find_simplices()
-
         self.check(0)
         self.check(1)
 
@@ -167,9 +149,6 @@ class TestCheckNesting(unittest.TestCase):
             epsilon=graphs['G7']['epsilon']
         )
 
-        self.vrc.create_graph()
-        self.vrc.find_simplices()
-
         self.check(0)
         self.check(1)
 
@@ -179,9 +158,6 @@ class TestCheckNesting(unittest.TestCase):
             coords=graphs['G8']['coords'],
             epsilon=graphs['G8']['epsilon']
         )
-
-        self.vrc.create_graph()
-        self.vrc.find_simplices()
 
         self.check(0)
         self.check(1)
@@ -194,9 +170,6 @@ class TestCheckNesting(unittest.TestCase):
             coords=graphs['G9']['coords'],
             epsilon=graphs['G9']['epsilon']
         )
-
-        self.vrc.create_graph()
-        self.vrc.find_simplices()
 
         self.check(0)
         self.check(1)

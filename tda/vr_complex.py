@@ -43,14 +43,15 @@ class VietorisRipsComplex(object):
         self.points = points
         self.epsilon = epsilon
         self.metric = metric
-        self.n_points = len(points)
+        self.number_of_points = len(points)
 
         self.graph = nx.Graph()
-        self.n_edges = None
+        self.number_of_edges = None
         self.faces = None
         self.simplices = None
         self.max_dim = None
-        self.faces = None
+
+        self.create_graph()
 
     def create_graph(self):
         """
@@ -85,15 +86,15 @@ class VietorisRipsComplex(object):
 
         """
 
-        self.n_edges = 0
         for i in range(len(self.points)):
             for j in range(i + 1, len(self.points)):
                 p1, p2 = self.points[i], self.points[j]
                 if self.metric(p1, p2) < self.epsilon:
                     self.graph.add_edge(p1, p2)
-                    self.n_edges += 1
 
-    def _remove_edges(self):
+        self.number_of_edges = self.graph.number_of_edges()
+
+    def _clear_edges(self):
         """
 
         Remove edges from graph.
@@ -124,6 +125,9 @@ class VietorisRipsComplex(object):
 
         """
 
+        if self.simplices is not None:
+            return self.simplices
+
         self.simplices = tuple(map(tuple, nx.find_cliques(self.graph)))
         return self.simplices
 
@@ -144,10 +148,16 @@ class VietorisRipsComplex(object):
 
         """
 
+        if self.faces is not None:
+            return self.faces
+
+        if self.simplices is None:
+            self.find_simplices()
+
         faces = set()
         for s in self.simplices:
-            n_edges = len(s)
-            for face_dim in range(n_edges, 0, -1):
+            number_of_edges = len(s)
+            for face_dim in range(number_of_edges, 0, -1):
                 for face in combinations(s, face_dim):
                     curr_face = tuple(sorted(face, key=lambda x: x.name))
                     faces.add(curr_face)
@@ -179,6 +189,9 @@ class VietorisRipsComplex(object):
         if dim < 0:
             raise ValueError('A non-negative dimension was expected.')
 
+        if self.simplices is None:
+            self.find_simplices()
+
         faces_with_dim = set()
         for s in self.simplices:
             if len(s) < dim:
@@ -206,14 +219,12 @@ class VietorisRipsComplex(object):
 
         self.epsilon = epsilon
 
-        self.simplices = None
-        self.n_edges = None
+        self.number_of_edges = None
         self.faces = None
         self.simplices = None
         self.max_dim = None
-        self.faces = None
 
-        self._remove_edges()
+        self._clear_edges()
         self._add_edges()
 
     @property
@@ -228,6 +239,9 @@ class VietorisRipsComplex(object):
             Dimension of the simplicial complex
 
         """
+
+        if self.simplices is None:
+            self.find_simplices()
 
         self.max_dim = 0
         for s in self.simplices:

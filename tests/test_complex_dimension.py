@@ -18,8 +18,6 @@ class TestComplexDimension(unittest.TestCase):
             epsilon=graphs['G1']['epsilon']
         )
 
-        self.vrc.create_graph()
-        self.vrc.find_simplices()
         self.assertEqual(self.vrc.complex_dimension, 3)
 
     def test_complex_dimension_G2(self):
@@ -30,8 +28,6 @@ class TestComplexDimension(unittest.TestCase):
             epsilon=graphs['G2']['epsilon']
         )
 
-        self.vrc.create_graph()
-        self.vrc.find_simplices()
         self.assertEqual(self.vrc.complex_dimension, 2)
 
     def test_complex_dimension_G3(self):
@@ -42,8 +38,6 @@ class TestComplexDimension(unittest.TestCase):
             epsilon=graphs['G3']['epsilon']
         )
 
-        self.vrc.create_graph()
-        self.vrc.find_simplices()
         self.assertEqual(self.vrc.complex_dimension, 2)
 
     def test_complex_dimension_G4(self):
@@ -54,8 +48,6 @@ class TestComplexDimension(unittest.TestCase):
             epsilon=graphs['G4']['epsilon']
         )
 
-        self.vrc.create_graph()
-        self.vrc.find_simplices()
         self.assertEqual(self.vrc.complex_dimension, 0)
 
     def test_complex_dimension_G5(self):
@@ -66,8 +58,6 @@ class TestComplexDimension(unittest.TestCase):
             epsilon=graphs['G5']['epsilon']
         )
 
-        self.vrc.create_graph()
-        self.vrc.find_simplices()
         self.assertEqual(self.vrc.complex_dimension, 2)
 
     def test_complex_dimension_G6(self):
@@ -78,8 +68,6 @@ class TestComplexDimension(unittest.TestCase):
             epsilon=graphs['G6']['epsilon']
         )
 
-        self.vrc.create_graph()
-        self.vrc.find_simplices()
         self.assertEqual(self.vrc.complex_dimension, 2)
 
     def test_complex_dimension_G7(self):
@@ -90,8 +78,6 @@ class TestComplexDimension(unittest.TestCase):
             epsilon=graphs['G7']['epsilon']
         )
 
-        self.vrc.create_graph()
-        self.vrc.find_simplices()
         self.assertEqual(self.vrc.complex_dimension, 2)
 
     def test_complex_dimension_G8(self):
@@ -102,8 +88,6 @@ class TestComplexDimension(unittest.TestCase):
             epsilon=graphs['G8']['epsilon']
         )
 
-        self.vrc.create_graph()
-        self.vrc.find_simplices()
         self.assertEqual(self.vrc.complex_dimension, 4)
 
     def test_complex_dimension_G9(self):
@@ -114,8 +98,6 @@ class TestComplexDimension(unittest.TestCase):
             epsilon=graphs['G9']['epsilon']
         )
 
-        self.vrc.create_graph()
-        self.vrc.find_simplices()
         self.assertEqual(self.vrc.complex_dimension, 9)
 
 

@@ -18,9 +18,6 @@ class TestFindFacesWithDim(unittest.TestCase):
             epsilon=graphs['G1']['epsilon']
         )
 
-        self.vrc.create_graph()
-        self.vrc.find_simplices()
-
         self.assertEqual(len(self.vrc.find_faces_with_dim(0)), 4)
         self.assertEqual(len(self.vrc.find_faces_with_dim(1)), 6)
         self.assertEqual(len(self.vrc.find_faces_with_dim(2)), 4)
@@ -34,9 +31,6 @@ class TestFindFacesWithDim(unittest.TestCase):
             epsilon=graphs['G2']['epsilon']
         )
 
-        self.vrc.create_graph()
-        self.vrc.find_simplices()
-
         self.assertEqual(len(self.vrc.find_faces_with_dim(0)), 3)
         self.assertEqual(len(self.vrc.find_faces_with_dim(1)), 3)
         self.assertEqual(len(self.vrc.find_faces_with_dim(2)), 1)
@@ -48,9 +42,6 @@ class TestFindFacesWithDim(unittest.TestCase):
             coords=graphs['G3']['coords'],
             epsilon=graphs['G3']['epsilon']
         )
-
-        self.vrc.create_graph()
-        self.vrc.find_simplices()
 
         self.assertEqual(len(self.vrc.find_faces_with_dim(0)), 8)
         self.assertEqual(len(self.vrc.find_faces_with_dim(1)), 14)
@@ -64,9 +55,6 @@ class TestFindFacesWithDim(unittest.TestCase):
             epsilon=graphs['G4']['epsilon']
         )
 
-        self.vrc.create_graph()
-        self.vrc.find_simplices()
-
         self.assertEqual(len(self.vrc.find_faces_with_dim(0)), 6)
         self.assertEqual(len(self.vrc.find_faces_with_dim(1)), 0)
         self.assertEqual(len(self.vrc.find_faces_with_dim(2)), 0)
@@ -78,9 +66,6 @@ class TestFindFacesWithDim(unittest.TestCase):
             coords=graphs['G5']['coords'],
             epsilon=graphs['G5']['epsilon']
         )
-
-        self.vrc.create_graph()
-        self.vrc.find_simplices()
 
         self.assertEqual(len(self.vrc.find_faces_with_dim(0)), 6)
         self.assertEqual(len(self.vrc.find_faces_with_dim(1)), 6)
@@ -94,9 +79,6 @@ class TestFindFacesWithDim(unittest.TestCase):
             epsilon=graphs['G6']['epsilon']
         )
 
-        self.vrc.create_graph()
-        self.vrc.find_simplices()
-
         self.assertEqual(len(self.vrc.find_faces_with_dim(0)), 7)
         self.assertEqual(len(self.vrc.find_faces_with_dim(1)), 10)
         self.assertEqual(len(self.vrc.find_faces_with_dim(2)), 4)
@@ -108,9 +90,6 @@ class TestFindFacesWithDim(unittest.TestCase):
             coords=graphs['G7']['coords'],
             epsilon=graphs['G7']['epsilon']
         )
-
-        self.vrc.create_graph()
-        self.vrc.find_simplices()
 
         self.assertEqual(len(self.vrc.find_faces_with_dim(0)), 9)
         self.assertEqual(len(self.vrc.find_faces_with_dim(1)), 14)
@@ -124,9 +103,6 @@ class TestFindFacesWithDim(unittest.TestCase):
             epsilon=graphs['G8']['epsilon']
         )
 
-        self.vrc.create_graph()
-        self.vrc.find_simplices()
-
         self.assertEqual(len(self.vrc.find_faces_with_dim(0)), 10)
         self.assertEqual(len(self.vrc.find_faces_with_dim(1)), 22)
         self.assertEqual(len(self.vrc.find_faces_with_dim(2)), 19)
@@ -139,9 +115,6 @@ class TestFindFacesWithDim(unittest.TestCase):
             coords=graphs['G9']['coords'],
             epsilon=graphs['G9']['epsilon']
         )
-
-        self.vrc.create_graph()
-        self.vrc.find_simplices()
 
         self.assertEqual(len(self.vrc.find_faces_with_dim(0)), 10)
         self.assertEqual(len(self.vrc.find_faces_with_dim(1)), 45)
