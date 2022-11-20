@@ -34,7 +34,7 @@ class Matrix(object):
         self.num_rows = len(entries)
         self.num_cols = len(entries[0])
 
-    def get_row(self, row_index):
+    def get_row(self, row_index, value_check=True):
         """
 
         Get a row from matrix.
@@ -43,6 +43,8 @@ class Matrix(object):
         -----------
         row_index: int
             Index of a row.
+        value_check: boolean
+            If true check if row_index is correct.
 
         Output:
         -------
@@ -50,6 +52,12 @@ class Matrix(object):
             A row.
 
         """
+
+        if value_check is True:
+            if row_index < 0:
+                raise ValueError('Row index cannot be negative.')
+            elif row_index > self.num_rows:
+                raise ValueError('Row index out of range.')
 
         return self.entries[row_index]
 
