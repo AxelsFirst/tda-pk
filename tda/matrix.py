@@ -119,7 +119,8 @@ class Matrix(object):
             col.append(row[col_index])
         return col
 
-    def change_row(self, row_index, values, index_check=True):
+    def change_row(self, row_index, new_entries, index_check=True,
+                   new_entries_check=True):
         """
 
         Return a matrix with changed values of row.
@@ -128,10 +129,12 @@ class Matrix(object):
         -----------
         row_index: int
             Index of a row.
-        values: list
+        new_entries: list
             A list with desired values of row.
         index_check: bool
             If true then check if row_index is correct.
+        new_entries_check: bool
+            If true then check if length of new_entries is correct.
 
         Output:
         -------
@@ -143,7 +146,11 @@ class Matrix(object):
         if index_check is True:
             self.check_row_index(row_index)
 
-        self.entries[row_index] = values
+        if new_entries_check is True:
+            if len(new_entries) is not len(self.entries):
+                raise ValueError('Incorrect length of new_entries.')
+
+        self.entries[row_index] = new_entries
         return self.entries
 
     def change_col(self, col_index, values, index_check=True):
