@@ -9,19 +9,25 @@ class Matrix(object):
 
     """
 
-    def __init__(self, entries):
+    def __init__(self, entries, int_check=True):
         """
 
         Parameters:
         -----------
         entries: list
             Two dimensional list of entries.
+        int_check: boolean
+            Check if entries are integers.
 
         Notes:
         ------
-        Entries have to be integers.
+        Entries have to be integers due to modulo 2 operations.
 
         """
+
+        for i in range(len(entries)):
+            if type(entries[i]) != int:
+                raise ValueError('Entries have to be integers')
 
         self.entries = entries
         self.num_rows = len(entries)
