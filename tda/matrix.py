@@ -51,6 +51,23 @@ class Matrix(object):
         elif row_index >= self.num_rows:
             raise ValueError('Row index out of range.')
 
+    def check_col_index(self, col_index):
+        """
+
+        Check if row_index has a correct value.
+
+        Parameters:
+        -----------
+        col_index: int
+            Index of a col.
+
+        """
+
+        if col_index < 0:
+            raise ValueError('Row index cannot be negative.')
+        elif col_index >= self.num_cols:
+            raise ValueError('Row index out of range.')
+
     def get_row(self, row_index, index_check=True):
         """
 
