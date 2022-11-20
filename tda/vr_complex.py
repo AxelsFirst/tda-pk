@@ -359,7 +359,11 @@ class VietorisRipsComplex(object):
 
         """
 
-        raise NotImplementedError()
+        betti = []
+        for i in range(self.max_dim):
+            betti.append(self.nth_betti_number(i))
+
+        return betti
 
     def nth_betti_number(self, n):
         """
@@ -368,7 +372,7 @@ class VietorisRipsComplex(object):
 
         Outputs:
         --------
-        nth-betti_number : int
+        n_betti : int
             N-th Betti number of a complex.
 
         Notes:
@@ -382,7 +386,10 @@ class VietorisRipsComplex(object):
 
         """
 
-        raise NotImplementedError()
+        n_bound = self.boundary_operator_matrix(n)[0]
+        n1_bound = self.boundary_operator_matrix(n+1)[0]
+
+        return n_bound.num_cols - n_bound.snf_rank() - n1_bound.snf_rank()
 
     @classmethod
     def from_data_frame(cls, df, columns, epsilon, metric=None, prefix=''):
