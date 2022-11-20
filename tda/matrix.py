@@ -90,7 +90,7 @@ class Matrix(object):
         if index_check is True:
             self.check_row_index(row_index)
 
-        return self.entries[row_index]
+        return copy(self.entries[row_index])
 
     def get_col(self, col_index, index_check=True):
         """
@@ -117,7 +117,7 @@ class Matrix(object):
         col = []
         for row in self.entries:
             col.append(row[col_index])
-        return col
+        return copy(col)
 
     def change_row(self, row_index, new_entries, index_check=True,
                    new_entries_check=True):
@@ -297,8 +297,8 @@ class Matrix(object):
                                range(entry_index+1, self.num_rows)):
 
             if self.entries[row_index][entry_index] != 0:
-                copied_row = copy(self.get_row(row_index))
-                copied_entry_row = copy(self.get_row(entry_index))
+                copied_row = self.get_row(row_index)
+                copied_entry_row = self.get_row(entry_index)
 
                 self.change_row(entry_index, copied_row)
                 self.change_row(row_index, copied_entry_row)
@@ -308,8 +308,8 @@ class Matrix(object):
         for col_index in chain(range(entry_index),
                                range(entry_index+1, self.num_cols)):
             if self.entries[entry_index][col_index] != 0:
-                copied_col = copy(self.get_col(col_index))
-                copied_entry_col = copy(self.get_col(entry_index))
+                copied_col = self.get_col(col_index)
+                copied_entry_col = self.get_col(entry_index)
 
                 self.change_col(entry_index, copied_col)
                 self.change_col(col_index, copied_entry_col)
