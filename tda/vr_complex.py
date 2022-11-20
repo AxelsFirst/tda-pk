@@ -125,6 +125,9 @@ class VietorisRipsComplex(object):
 
         """
 
+        if self.simplices is not None:
+            return self.simplices
+
         self.simplices = tuple(map(tuple, nx.find_cliques(self.graph)))
         return self.simplices
 
