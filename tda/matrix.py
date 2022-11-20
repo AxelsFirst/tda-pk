@@ -330,8 +330,10 @@ class Matrix(object):
         ------
         The method uses modulo 2 addition.
 
-        The method is not consistent with theory, but it is good enough
-        for getting rank of a matrix.
+        The method makes some alterations to improve time complexity.
+        Output could not be equal to theoretical Smith normal form of
+        a inputed matrix, although it will not impact negatively
+        other functions that use snf method.
 
         """
 
