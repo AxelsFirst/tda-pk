@@ -147,7 +147,7 @@ class Matrix(object):
             self.check_row_index(row_index)
 
         if new_entries_check is True:
-            if len(new_entries) is not len(self.entries):
+            if len(new_entries) is not len(self.entries[0]):
                 raise ValueError('Incorrect length of new_entries.')
 
         self.entries[row_index] = new_entries
