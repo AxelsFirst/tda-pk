@@ -43,14 +43,16 @@ class VietorisRipsComplex(object):
         self.points = points
         self.epsilon = epsilon
         self.metric = metric
-        self.n_points = len(points)
+        self.number_points = len(points)
 
         self.graph = nx.Graph()
-        self.n_edges = None
+        self.number_edges = None
         self.faces = None
         self.simplices = None
         self.max_dim = None
         self.faces = None
+
+        self.create_graph()
 
     def create_graph(self):
         """
@@ -85,13 +87,13 @@ class VietorisRipsComplex(object):
 
         """
 
-        self.n_edges = 0
         for i in range(len(self.points)):
             for j in range(i + 1, len(self.points)):
                 p1, p2 = self.points[i], self.points[j]
                 if self.metric(p1, p2) < self.epsilon:
                     self.graph.add_edge(p1, p2)
-                    self.n_edges += 1
+
+        self.number_edges = self.graph.number_of_edges()
 
     def _remove_edges(self):
         """
@@ -146,8 +148,8 @@ class VietorisRipsComplex(object):
 
         faces = set()
         for s in self.simplices:
-            n_edges = len(s)
-            for face_dim in range(n_edges, 0, -1):
+            number_edges = len(s)
+            for face_dim in range(number_edges, 0, -1):
                 for face in combinations(s, face_dim):
                     curr_face = tuple(sorted(face, key=lambda x: x.name))
                     faces.add(curr_face)
@@ -207,7 +209,7 @@ class VietorisRipsComplex(object):
         self.epsilon = epsilon
 
         self.simplices = None
-        self.n_edges = None
+        self.number_edges = None
         self.faces = None
         self.simplices = None
         self.max_dim = None
