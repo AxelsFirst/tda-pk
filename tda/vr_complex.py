@@ -94,7 +94,7 @@ class VietorisRipsComplex(object):
 
         self.number_edges = self.graph.number_of_edges()
 
-    def _remove_edges(self):
+    def _clear_edges(self):
         """
 
         Remove edges from graph.
@@ -144,6 +144,9 @@ class VietorisRipsComplex(object):
         https://en.wikipedia.org/wiki/Simplex
 
         """
+
+        if self.faces is not None:
+            return self.faces
 
         faces = set()
         for s in self.simplices:
@@ -212,7 +215,7 @@ class VietorisRipsComplex(object):
         self.simplices = None
         self.max_dim = None
 
-        self._remove_edges()
+        self._clear_edges()
         self._add_edges()
 
     @property
