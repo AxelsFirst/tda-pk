@@ -61,7 +61,7 @@ class Matrix(object):
 
         return self.entries[row_index]
 
-    def get_col(self, col_index):
+    def get_col(self, col_index, value_check=True):
         """
 
         Get a column from matrix.
@@ -70,6 +70,8 @@ class Matrix(object):
         -----------
         col_index: int
             Index of a column.
+        value_check: boolean
+            If true check if col_index is correct.
 
         Output:
         -------
@@ -77,6 +79,12 @@ class Matrix(object):
             A column.
 
         """
+
+        if value_check is True:
+            if col_index < 0:
+                raise ValueError('Col index cannot be negative.')
+            elif col_index > self.num_cols:
+                raise ValueError('Col index out of range.')
 
         col = []
         for row in self.entries:
