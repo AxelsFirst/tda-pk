@@ -83,7 +83,7 @@ class Matrix(object):
         if value_check is True:
             if col_index < 0:
                 raise ValueError('Col index cannot be negative.')
-            elif col_index > self.num_cols:
+            elif col_index >= self.num_cols:
                 raise ValueError('Col index out of range.')
 
         col = []
