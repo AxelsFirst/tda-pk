@@ -25,9 +25,10 @@ class Matrix(object):
 
         """
 
-        for i in range(len(entries)):
-            if type(entries[i]) != int:
-                raise ValueError('Entries have to be integers')
+        if int_check is True:
+            for i in range(len(entries)):
+                if type(entries[i]) is not int:
+                    raise ValueError('Entries have to be integers')
 
         self.entries = entries
         self.num_rows = len(entries)
