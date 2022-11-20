@@ -126,12 +126,12 @@ class Matrix(object):
 
         Parameters:
         -----------
-        matrix: list
-            A matrix.
         row_index: int
             Index of a row.
         values: list
             A list with desired values of row.
+        index_check: boolean
+            If true then check if row_index is correct.
 
         Output:
         -------
@@ -157,6 +157,8 @@ class Matrix(object):
             Index of a column.
         values: list
             A list with desired values of column.
+        index_check: boolean
+            If true then check if col_index is correct.
 
         Output:
         -------
@@ -183,6 +185,9 @@ class Matrix(object):
             Index of changed row.
         row_add_index: int
             Index of added row to another.
+        index_check: boolean
+            If true then check if row_target_index
+            and row_add_index are correct.
 
         Notes:
         ------
@@ -213,6 +218,9 @@ class Matrix(object):
             Index of changed col.
         col_add_index: int
             Index of added col to another.
+        index_check: boolean
+            If true then check if col_target_index
+            and col_add_index are correct.
 
         Notes:
         ------
