@@ -17,8 +17,6 @@ class TestFindFaces(unittest.TestCase):
             epsilon=graphs['G1']['epsilon']
         )
 
-        self.vrc.create_graph()
-        self.vrc.find_simplices()
         self.assertEqual(len(self.vrc.find_faces()), 15)
 
     def test_find_faces_G2(self):
@@ -28,8 +26,6 @@ class TestFindFaces(unittest.TestCase):
             epsilon=graphs['G2']['epsilon']
         )
 
-        self.vrc.create_graph()
-        self.vrc.find_simplices()
         self.assertEqual(len(self.vrc.find_faces()), 7)
 
     def test_find_faces_G3(self):
@@ -39,8 +35,6 @@ class TestFindFaces(unittest.TestCase):
             epsilon=graphs['G3']['epsilon']
         )
 
-        self.vrc.create_graph()
-        self.vrc.find_simplices()
         self.assertEqual(len(self.vrc.find_faces()), 29)
 
     def test_find_faces_G4(self):
@@ -50,8 +44,6 @@ class TestFindFaces(unittest.TestCase):
             epsilon=graphs['G4']['epsilon']
         )
 
-        self.vrc.create_graph()
-        self.vrc.find_simplices()
         self.assertEqual(len(self.vrc.find_faces()), 6)
 
     def test_find_faces_G5(self):
@@ -61,8 +53,6 @@ class TestFindFaces(unittest.TestCase):
             epsilon=graphs['G5']['epsilon']
         )
 
-        self.vrc.create_graph()
-        self.vrc.find_simplices()
         self.assertEqual(len(self.vrc.find_faces()), 14)
 
     def test_find_faces_G6(self):
@@ -72,8 +62,6 @@ class TestFindFaces(unittest.TestCase):
             epsilon=graphs['G6']['epsilon']
         )
 
-        self.vrc.create_graph()
-        self.vrc.find_simplices()
         self.assertEqual(len(self.vrc.find_faces()), 21)
 
     def test_find_faces_G7(self):
@@ -83,8 +71,6 @@ class TestFindFaces(unittest.TestCase):
             epsilon=graphs['G7']['epsilon']
         )
 
-        self.vrc.create_graph()
-        self.vrc.find_simplices()
         self.assertEqual(len(self.vrc.find_faces()), 29)
 
     def test_find_faces_G8(self):
@@ -94,8 +80,6 @@ class TestFindFaces(unittest.TestCase):
             epsilon=graphs['G8']['epsilon']
         )
 
-        self.vrc.create_graph()
-        self.vrc.find_simplices()
         self.assertEqual(len(self.vrc.find_faces()), 59)
 
     def test_find_faces_G9(self):
@@ -105,8 +89,6 @@ class TestFindFaces(unittest.TestCase):
             epsilon=graphs['G9']['epsilon']
         )
 
-        self.vrc.create_graph()
-        self.vrc.find_simplices()
         self.assertEqual(len(self.vrc.find_faces()), 1023)
 
 
