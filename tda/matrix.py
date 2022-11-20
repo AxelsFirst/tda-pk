@@ -64,9 +64,9 @@ class Matrix(object):
         """
 
         if col_index < 0:
-            raise ValueError('Row index cannot be negative.')
+            raise ValueError('Col index cannot be negative.')
         elif col_index >= self.num_cols:
-            raise ValueError('Row index out of range.')
+            raise ValueError('Col index out of range.')
 
     def get_row(self, row_index, index_check=True):
         """
@@ -92,7 +92,7 @@ class Matrix(object):
 
         return self.entries[row_index]
 
-    def get_col(self, col_index, value_check=True):
+    def get_col(self, col_index, index_check=True):
         """
 
         Get a column from matrix.
@@ -101,7 +101,7 @@ class Matrix(object):
         -----------
         col_index: int
             Index of a column.
-        value_check: boolean
+        index_check: boolean
             If true check if col_index is correct.
 
         Output:
@@ -111,18 +111,15 @@ class Matrix(object):
 
         """
 
-        if value_check is True:
-            if col_index < 0:
-                raise ValueError('Col index cannot be negative.')
-            elif col_index >= self.num_cols:
-                raise ValueError('Col index out of range.')
+        if index_check is True:
+            self.check_col_index(col_index)
 
         col = []
         for row in self.entries:
             col.append(row[col_index])
         return col
 
-    def change_row(self, row_index, values):
+    def change_row(self, row_index, values, index_check=True):
         """
 
         Return a matrix with changed values of row.
@@ -143,10 +140,13 @@ class Matrix(object):
 
         """
 
+        if index_check is True:
+            self.check_row_index(row_index)
+
         self.entries[row_index] = values
         return self.entries
 
-    def change_col(self, col_index, values):
+    def change_col(self, col_index, values, index_check=True):
         """
 
         Return a matrix with changed values of column.
@@ -164,6 +164,9 @@ class Matrix(object):
             A entries of a matrix with changed values.
 
         """
+
+        if index_check is True:
+            self.check_col_index(col_index)
 
         for row_index in range(self.num_rows):
             self.entries[row_index][col_index] = values[col_index]
