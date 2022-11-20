@@ -151,6 +151,9 @@ class VietorisRipsComplex(object):
         if self.faces is not None:
             return self.faces
 
+        if self.simplices is None:
+            self.find_simplices()
+
         faces = set()
         for s in self.simplices:
             number_of_edges = len(s)
@@ -185,6 +188,9 @@ class VietorisRipsComplex(object):
 
         if dim < 0:
             raise ValueError('A non-negative dimension was expected.')
+
+        if self.simplices is None:
+            self.find_simplices()
 
         faces_with_dim = set()
         for s in self.simplices:
@@ -233,6 +239,9 @@ class VietorisRipsComplex(object):
             Dimension of the simplicial complex
 
         """
+
+        if self.simplices is None:
+            self.find_simplices()
 
         self.max_dim = 0
         for s in self.simplices:
