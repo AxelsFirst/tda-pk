@@ -287,11 +287,7 @@ class Matrix(object):
             self.check_row_index(entry_index)
             self.check_col_index(entry_index)
 
-        zero_row = True
-        for i in range(self.num_cols):
-            if self.entries[entry_index][i] != 0:
-                zero_row = False
-        if zero_row is True:
+        if any(val != 0 for val in self.entries[entry_index]) is True:
             return False
 
         if self.entries[entry_index][entry_index] != 0:
