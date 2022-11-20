@@ -25,7 +25,7 @@ class Matrix(object):
 
         """
 
-        if int_check is True:
+        if int_check:
             for i in range(len(entries)):
                 if type(entries[i]) is not int:
                     raise ValueError('Entries have to be integers')
@@ -87,7 +87,7 @@ class Matrix(object):
 
         """
 
-        if index_check is True:
+        if index_check:
             self.check_row_index(row_index)
 
         return copy(self.entries[row_index])
@@ -111,7 +111,7 @@ class Matrix(object):
 
         """
 
-        if index_check is True:
+        if index_check:
             self.check_col_index(col_index)
 
         col = []
@@ -143,12 +143,11 @@ class Matrix(object):
 
         """
 
-        if index_check is True:
+        if index_check:
             self.check_row_index(row_index)
 
-        if new_entries_check is True:
-            if len(new_entries) is not len(self.entries[0]):
-                raise ValueError('Incorrect length of new_entries.')
+        if new_entries_check and len(new_entries) is not len(self.entries[0]):
+            raise ValueError('Incorrect length of new_entries.')
 
         self.entries[row_index] = new_entries
         return self.entries
@@ -177,12 +176,11 @@ class Matrix(object):
 
         """
 
-        if index_check is True:
+        if index_check:
             self.check_col_index(col_index)
 
-        if new_entries_check is True:
-            if len(new_entries) is not len(self.entries):
-                raise ValueError('Incorrect length of new_entries.')
+        if new_entries_check and len(new_entries) is not len(self.entries):
+            raise ValueError('Incorrect length of new_entries.')
 
         for row_index in range(self.num_rows):
             self.entries[row_index][col_index] = new_entries[col_index]
@@ -209,7 +207,7 @@ class Matrix(object):
 
         """
 
-        if index_check is True:
+        if index_check:
             self.check_row_index(row_target_index)
             self.check_row_index(row_add_index)
 
@@ -242,7 +240,7 @@ class Matrix(object):
 
         """
 
-        if index_check is True:
+        if index_check:
             self.check_col_index(col_target_index)
             self.check_col_index(col_add_index)
 
@@ -283,11 +281,11 @@ class Matrix(object):
 
         """
 
-        if index_check is True:
+        if index_check:
             self.check_row_index(entry_index)
             self.check_col_index(entry_index)
 
-        if any(val != 0 for val in self.entries[entry_index]) is True:
+        if any(val != 0 for val in self.entries[entry_index]):
             return False
 
         if self.entries[entry_index][entry_index] != 0:
@@ -343,7 +341,7 @@ class Matrix(object):
         for dim in range(max_dim):
             value_check = snf.non_zero(dim)
 
-            if value_check is True:
+            if value_check:
                 for row_index in chain(range(dim), range(dim+1, snf.num_rows)):
                     if snf.entries[row_index][dim] == 1:
                         snf.add_rows(row_index, dim)
