@@ -16,7 +16,7 @@ class Matrix(object):
         -----------
         entries: list
             Two dimensional list of entries.
-        int_check: boolean
+        int_check: bool
             Check if entries are integers.
 
         Notes:
@@ -77,7 +77,7 @@ class Matrix(object):
         -----------
         row_index: int
             Index of a row.
-        index_check: boolean
+        index_check: bool
             If true then check if row_index is correct.
 
         Output:
@@ -101,7 +101,7 @@ class Matrix(object):
         -----------
         col_index: int
             Index of a column.
-        index_check: boolean
+        index_check: bool
             If true check if col_index is correct.
 
         Output:
@@ -130,7 +130,7 @@ class Matrix(object):
             Index of a row.
         values: list
             A list with desired values of row.
-        index_check: boolean
+        index_check: bool
             If true then check if row_index is correct.
 
         Output:
@@ -157,7 +157,7 @@ class Matrix(object):
             Index of a column.
         values: list
             A list with desired values of column.
-        index_check: boolean
+        index_check: bool
             If true then check if col_index is correct.
 
         Output:
@@ -185,7 +185,7 @@ class Matrix(object):
             Index of changed row.
         row_add_index: int
             Index of added row to another.
-        index_check: boolean
+        index_check: bool
             If true then check if row_target_index
             and row_add_index are correct.
 
@@ -218,7 +218,7 @@ class Matrix(object):
             Index of changed col.
         col_add_index: int
             Index of added col to another.
-        index_check: boolean
+        index_check: bool
             If true then check if col_target_index
             and col_add_index are correct.
 
@@ -240,7 +240,7 @@ class Matrix(object):
             summed_col.append(summed_entries)
         self.change_row(col_target_index, summed_col)
 
-    def non_zero(self, entry_index):
+    def non_zero(self, entry_index, index_check=True):
         """
 
         Arranges rows and cols so that specified entry on diagonal is non zero.
@@ -249,6 +249,7 @@ class Matrix(object):
         -----------
         entry_index: int
             Index of a row (and column) that contains the entry.
+        index_check: bool
 
         Output:
         -------
@@ -263,10 +264,14 @@ class Matrix(object):
         It will move a row, if non zero entry is on the same column as the
         desired place.
 
-        It will move a columns, if non zero entry is right of
+        It will move a columns, if non zero entry is on the right side of
         the desired place.
 
         """
+
+        if index_check is True:
+            self.check_row_index(entry_index)
+            self.check_col_index(entry_index)
 
         zero_row = True
         for i in range(self.num_cols):
