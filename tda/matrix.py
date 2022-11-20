@@ -56,7 +56,7 @@ class Matrix(object):
         if value_check is True:
             if row_index < 0:
                 raise ValueError('Row index cannot be negative.')
-            elif row_index > self.num_rows:
+            elif row_index >= self.num_rows:
                 raise ValueError('Row index out of range.')
 
         return self.entries[row_index]
