@@ -172,31 +172,35 @@ class Matrix(object):
             self.entries[row_index][col_index] = values[col_index]
         return self.entries
 
-    def add_rows(self, index_row_to_change, index_row_to_add):
+    def add_rows(self, row_target_index, row_add_index, index_check=True):
         """
 
         Add one row to another.
 
         Parameters:
         -----------
-        index_row_to_change: int
+        row_target_index: int
             Index of changed row.
-        index_row_to_add: int
+        row_add_index: int
             Index of added row to another.
 
         Notes:
         ------
-        The method uses modulo 2 addition of entries.
+        This method uses modulo 2 addition of entries.
 
         """
 
-        row_to_change = self.get_row(index_row_to_change)
-        row_to_add = self.get_row(index_row_to_add)
+        if index_check is True:
+            self.check_row_index(row_target_index)
+            self.check_row_index(row_add_index)
+
+        row_target = self.get_row(row_target_index)
+        row_add = self.get_row(row_add_index)
         summed_row = []
         for i in range(self.num_cols):
-            summed_entries = (row_to_change[i] + row_to_add[i]) % 2
+            summed_entries = (row_target[i] + row_add[i]) % 2
             summed_row.append(summed_entries)
-        self.change_row(index_row_to_change, summed_row)
+        self.change_row(row_target_index, summed_row)
 
     def add_cols(self, index_col_to_change, index_col_to_add):
         """
