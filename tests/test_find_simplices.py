@@ -18,7 +18,6 @@ class TestFindSimplices(unittest.TestCase):
             epsilon=graphs['G1']['epsilon']
         )
 
-        self.vrc.create_graph()
         simplices = self.vrc.find_simplices()
         self.assertEqual(len(simplices), 1)
         names = sorted(p.name for p in simplices[0])
@@ -32,7 +31,6 @@ class TestFindSimplices(unittest.TestCase):
             epsilon=graphs['G2']['epsilon']
         )
 
-        self.vrc.create_graph()
         simplices = self.vrc.find_simplices()
         self.assertEqual(len(simplices), 1)
         names = sorted(p.name for p in simplices[0])
@@ -46,7 +44,6 @@ class TestFindSimplices(unittest.TestCase):
             epsilon=graphs['G3']['epsilon']
         )
 
-        self.vrc.create_graph()
         simplices = self.vrc.find_simplices()
         self.assertEqual(len(simplices), 7)
 
@@ -58,7 +55,6 @@ class TestFindSimplices(unittest.TestCase):
             epsilon=graphs['G4']['epsilon']
         )
 
-        self.vrc.create_graph()
         simplices = self.vrc.find_simplices()
         self.assertEqual(len(simplices), 6)
 
@@ -70,7 +66,6 @@ class TestFindSimplices(unittest.TestCase):
             epsilon=graphs['G5']['epsilon']
         )
 
-        self.vrc.create_graph()
         simplices = self.vrc.find_simplices()
         self.assertEqual(len(simplices), 2)
 
@@ -82,7 +77,6 @@ class TestFindSimplices(unittest.TestCase):
             epsilon=graphs['G6']['epsilon']
         )
 
-        self.vrc.create_graph()
         simplices = self.vrc.find_simplices()
         self.assertEqual(len(simplices), 4)
 
@@ -94,15 +88,30 @@ class TestFindSimplices(unittest.TestCase):
             epsilon=graphs['G7']['epsilon']
         )
 
-        self.vrc.create_graph()
         simplices = self.vrc.find_simplices()
         self.assertEqual(len(simplices), 8)
 
     def test_find_simplices_G8(self):
-        pass
+
+        self.vrc = VietorisRipsComplex.from_list(
+            names=graphs['G8']['names'],
+            coords=graphs['G8']['coords'],
+            epsilon=graphs['G8']['epsilon']
+        )
+
+        simplices = self.vrc.find_simplices()
+        self.assertEqual(len(simplices), 5)
 
     def test_find_simplices_G9(self):
-        pass
+
+        self.vrc = VietorisRipsComplex.from_list(
+            names=graphs['G9']['names'],
+            coords=graphs['G9']['coords'],
+            epsilon=graphs['G9']['epsilon']
+        )
+
+        simplices = self.vrc.find_simplices()
+        self.assertEqual(len(simplices), 1)
 
 
 if __name__ == '__main__':
