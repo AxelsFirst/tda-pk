@@ -272,13 +272,13 @@ class Matrix(object):
 
         Notes:
         ------
-        Intended to use only in smith_normal_form method due to algorithm
+        Intended to be used only in smith_normal_form method due to algorithm
         optimizations.
 
-        It will move a row, if non zero entry is on the same column as the
+        Row will be moved, if a non zero entry is on the same column as the
         desired place.
 
-        It will move a columns, if non zero entry is on the right side of
+        Column will be moved, if a non zero entry is on the right side of
         the desired place.
 
         """
