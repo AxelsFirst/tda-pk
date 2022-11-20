@@ -202,16 +202,16 @@ class Matrix(object):
             summed_row.append(summed_entries)
         self.change_row(row_target_index, summed_row)
 
-    def add_cols(self, index_col_to_change, index_col_to_add):
+    def add_cols(self, col_target_index, col_add_index, index_check):
         """
 
         Add one col to another.
 
         Parameters:
         -----------
-        index_col_to_change: int
+        col_target_index: int
             Index of changed col.
-        index_col_to_add: int
+        col_add_index: int
             Index of added col to another.
 
         Notes:
@@ -220,13 +220,17 @@ class Matrix(object):
 
         """
 
-        col_to_change = self.get_col(index_col_to_change)
-        col_to_add = self.get_col(index_col_to_add)
+        if index_check is True:
+            self.check_col_index(col_target_index)
+            self.check_col_index(col_add_index)
+
+        col_target = self.get_col(col_target_index)
+        col_add = self.get_col(col_add_index)
         summed_col = []
         for i in range(self.num_rows):
-            summed_entries = (col_to_change[i] + col_to_add[i]) % 2
+            summed_entries = (col_target[i] + col_add[i]) % 2
             summed_col.append(summed_entries)
-        self.change_row(index_col_to_change, summed_col)
+        self.change_row(col_target_index, summed_col)
 
     def non_zero(self, entry_index):
         """
