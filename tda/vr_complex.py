@@ -192,9 +192,6 @@ class VietorisRipsComplex(object):
         if self.simplices is None:
             self.find_simplices()
 
-        if self.faces is None:
-            self.find_faces()
-
         faces_with_dim = set()
         for s in self.simplices:
             if len(s) < dim:
