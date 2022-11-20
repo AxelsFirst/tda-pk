@@ -50,7 +50,6 @@ class VietorisRipsComplex(object):
         self.faces = None
         self.simplices = None
         self.max_dim = None
-        self.faces = None
 
         self.create_graph()
 
@@ -208,12 +207,10 @@ class VietorisRipsComplex(object):
 
         self.epsilon = epsilon
 
-        self.simplices = None
         self.number_edges = None
         self.faces = None
         self.simplices = None
         self.max_dim = None
-        self.faces = None
 
         self._remove_edges()
         self._add_edges()
